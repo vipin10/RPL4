@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.radiant.rpl.testa.MainActivity">
+
+
+
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </android.support.design.widget.AppBarLayout>
+
+
+
+
+
+    />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:elevation="2dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/imageborder"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Registration for RPL4"
+                android:gravity="center"
+                android:textSize="24sp"
+                android:textColor="#000000"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/hint_name" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/hint_last_name"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Birth*"
+                    android:textSize="18sp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    android:orientation="horizontal"
+                    >
+                    <Spinner
+                        android:id="@+id/input_layout_year"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:fontFamily="sans-serif-condensed"
+                        android:paddingLeft="2dp"
+                        android:paddingStart="5dp"
+                        android:background="@drawable/background"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:spinnerMode="dropdown"
+                        android:textSize="14sp"
+                        />
+                    <Spinner
+                        android:id="@+id/input_layout_month"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background"
+                        android:fontFamily="sans-serif-condensed"
+                        android:paddingLeft="2dp"
+                        android:paddingStart="5dp"
+                        android:layout_marginLeft="2dp"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:spinnerMode="dropdown"
+                        android:textSize="14sp"
+                        />
+                    <Spinner
+                        android:id="@+id/input_layout_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background"
+                        android:fontFamily="sans-serif-condensed"
+                        android:paddingLeft="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:paddingStart="5dp"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:spinnerMode="dropdown"
+                        android:textSize="14sp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Spinner
+                android:background="@drawable/background"
+                android:spinnerMode="dialog"
+                android:id="@+id/input_layout_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="3dp"
+                >
+            </Spinner>
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_mobile_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_mobile_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    android:hint="@string/hint_mobile" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_address1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_address1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/hint_address_line1" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_address2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_address2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/hint_address_line2" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_pincode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_pincode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    android:hint="@string/hint_pincode" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/input_layout_State"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="2dp"
+                android:paddingStart="5dp"
+                android:layout_marginTop="2dp"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                />
+            <Spinner
+                android:id="@+id/input_layout_District"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="2dp"
+                android:paddingStart="5dp"
+                android:layout_marginTop="2dp"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                />
+            <!--<Spinner
+                android:background="@drawable/background"
+                android:spinnerMode="dialog"
+                android:id="@+id/input_layout_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                >
+            </Spinner>
+            <Spinner
+                android:background="@drawable/background"
+                android:spinnerMode="dialog"
+                android:id="@+id/input_layout_district"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                >
+            </Spinner>-->
+
+            <Spinner
+                android:id="@+id/input_layout_Education"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="2dp"
+                android:paddingStart="5dp"
+                android:layout_marginTop="2dp"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                />
+            <Spinner
+                android:id="@+id/input_layout_Employment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="2dp"
+                android:paddingStart="5dp"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                />
+
+            <Spinner
+                android:id="@+id/input_layout_Sector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="2dp"
+                android:paddingStart="5dp"
+                android:layout_marginTop="2dp"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                />
+
+            <Spinner
+                android:id="@+id/input_layout_Employer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="2dp"
+                android:paddingStart="5dp"
+                android:layout_marginTop="2dp"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                />
+
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_aadhar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_aadhar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    android:hint="@string/hint_aadhar" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/input_layout_bankname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="2dp"
+                android:paddingStart="5dp"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_bank_ac"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_bank_ac"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    android:hint="@string/hint_bank_ac" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_bank_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_bank_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="Name as in Bank" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_ifsc_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_ifsc_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/hint_ifsc_code" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/input_photograph"
+                    android:text="Click Photo"
+                    android:layout_weight="1"
+                    android:layout_marginRight="4dp"
+                    />
+
+
+
+            </LinearLayout>
+
+            <Button android:id="@+id/btn_signup"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:text="Register"
+                android:textSize="24sp"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="60dp"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+

@@ -1,0 +1,195 @@
+<resources>
+    <string name="app_name">TESTA</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- hint name of field -->
+
+
+    <string name="hint_name">First Name</string>
+    <string name="hint_middile_name">Middle Name</string>
+    <string name="hint_last_name">Last Name</string>
+    <string name="hint_dob">Date of Birth</string>
+    <string name="hint_gender">Gender</string>
+    <string name="hint_mobile"> Mobile No</string>
+    <string name="hint_landline">Landline No</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_address_line1">Address Line1</string>
+    <string name="hint_address_line2">Address Line2</string>
+    <string name="hint_State">State</string>
+    <string name="hint_district">District</string>
+    <string name="hint_pincode">Pincode</string>
+    <string name="hint_qualification">Qualification</string>
+    <string name="hint_employment">Employment</string>
+    <string name="hint_aadhar">Aadhar No</string>
+    <string name="hint_Photograph">Photograph</string>
+    <string name="hint_Sector">Sector</string>
+    <string name="hint_jobrole">Jobrole</string>
+    <string name="hint_anyDisablity">AnyDisablity</string>
+    <string name="hint_category">Category</string>
+    <string name="hint_bank_name">Bank Name</string>
+    <string name="hint_bank_ac">Bank Account No</string>
+    <string name="hint_ifsc_code">IFSC Code</string>
+    <string name="hint_pan">PAN Card No</string>
+    <string name="hint_employer">Employer</string>
+    <string name="hint_preffered_language">Examination Preffered Language</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="err_msg_name">Enter your full name</string>
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_password">Enter the password</string>
+
+    //error message
+    <string name="err_msg_foraadhar">it must be 12 digit</string>
+    <string name="err_msg_formobile">it must be 10 digit or not null</string>
+    <string name="err_msg_for_first_name">it must be in form or not empty</string>
+    <string name="err_msg_for_last_name">it must be in form or not empty</string>
+    <string name="err_msg_for_address1">it must be in form or not empty</string>
+    <string name="err_msg_for_state">it must be selected</string>
+    <string name="err_msg_for_dist">it must be selected</string>
+    <string name="err_msg_pincode">it must be 6 digit</string>
+    <string name="err_msg_employment">it must be selected</string>
+    <string name="err_msg_for_Bank_name">it must be in form or not empty</string>
+    <string name="err_msg_for_namein_bank">it must be in form or not empty</string>
+    <string name="err_msg_for_ifsc">it must be alphnumeric and in Capital Letters</string>
+    <string name="err_msg_for_sector">it must be in form or not empty</string>
+    <string name="err_msg_for_disable">it must be selected</string>
+    <string name="err_msg_for_acno">it must be filled and in between 1 to 14 digit</string>
+    <string name="err_msg_for_dob">it must be selected</string>
+    <string name="err_msg_for_gender">it must be selected</string>
+
+    <string-array name="gender">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="Year">
+        <item>Year</item>
+        <item>1958</item>
+        <item>1959</item>
+        <item>1960</item>
+        <item>1961</item>
+        <item>1962</item>
+        <item>1963</item>
+        <item>1964</item>
+        <item>1965</item>
+        <item>1966</item>
+        <item>1967</item>
+        <item>1968</item>
+        <item>1969</item>
+        <item>1970</item>
+        <item>1971</item>
+        <item>1972</item>
+        <item>1973</item>
+        <item>1974</item>
+        <item>1975</item>
+        <item>1976</item>
+        <item>1977</item>
+        <item>1978</item>
+        <item>1979</item>
+        <item>1980</item>
+        <item>1981</item>
+        <item>1982</item>
+        <item>1983</item>
+        <item>1984</item>
+        <item>1985</item>
+        <item>1986</item>
+        <item>1987</item>
+        <item>1988</item>
+        <item>1989</item>
+        <item>1990</item>
+        <item>1991</item>
+        <item>1992</item>
+        <item>1993</item>
+        <item>1994</item>
+        <item>1995</item>
+        <item>1996</item>
+        <item>1997</item>
+        <item>1998</item>
+        <item>1999</item>
+        <item>2000</item>
+        <item>2001</item>
+    </string-array>
+
+    <string-array name="Month">
+        <item>Month</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="Date">
+        <item>Date</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+    </string-array>
+
+    <string-array name="Education">
+        <item>Select Education</item>
+        <item>Upto 10th</item>
+        <item>Upto 12th</item>
+        <item>ITI</item>
+        <item>Polytechnic</item>
+        <item>Graduate</item>
+        <item>Graduation and above</item>
+    </string-array>
+
+    <string-array name="Employment">
+        <item>Are you employed?</item>
+        <item>Yes </item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="State">
+        <item>Select State</item>
+        <item>Yes </item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="District">
+        <item>Select District</item>
+        <item>Yes </item>
+        <item>No</item>
+    </string-array>
+
+</resources>
