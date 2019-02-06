@@ -167,7 +167,9 @@ ProgressDialog pd;
                 }
 
 
-                if(awesomeValidation.validate() && !encodedphoto.equals(null) && !yearobirth.equals("Year")) {
+                else if(awesomeValidation.validate() && !(gender.equals("Select Gender"))&& !state1.equals("Select the State") && !yearobirth.equals("Year")
+                         && !district1.equals("Select the District") && !eduction1.equals("Select Education") && !employment1.equals("Are you employed?")
+                         && !(sector1.equals("Select the Sector")) && !(bankname1.equals("Select the Bank")) && encodedphoto!=null) {
 
                     //Toast.makeText(getApplicationContext(), "data", Toast.LENGTH_LONG).show();
                     Intent ii = new Intent(MainActivity.this, Reverify.class);
@@ -197,7 +199,7 @@ ProgressDialog pd;
 
                 }else
                 {
-                    Toast.makeText(getApplicationContext(), "Please fill correct Data", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Either photo is not uploaded or data is incorrect", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -408,7 +410,6 @@ ProgressDialog pd;
                 if(position > 0){
 
                     sectoridd=sectordetail.get(selectedsectortext);
-                   // Toast.makeText(getApplicationContext(), "Selected : " + sectoridd, Toast.LENGTH_SHORT).show();
                     Employerlist(sectoridd);
 
                 }
@@ -416,7 +417,6 @@ ProgressDialog pd;
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
 
             }
 
@@ -634,11 +634,7 @@ ProgressDialog pd;
 
 
         String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_state.php";
-       /* pd = new ProgressDialog(MainActivity.this);
-        pd.setMessage("Loading...");
-        pd.setCancelable(false);
-        pd.setCanceledOnTouchOutside(false);*/
-       // pd.show();
+
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
@@ -856,8 +852,8 @@ districtlist.clear();
             public void onResponse(String response) {
                 employerlist.clear();
                 try {
-                    JSONObject jobj = new JSONObject(response);
 
+                    JSONObject jobj = new JSONObject(response);
                     String status= jobj.getString("status");
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("employer");
@@ -903,7 +899,7 @@ districtlist.clear();
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("sector_id",Sectorvalue);
+                map.put("ssc_id",Sectorvalue);
                 return map;
             }
         };

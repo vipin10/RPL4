@@ -24,6 +24,8 @@
     <string name="hint_Photograph">Photograph</string>
     <string name="hint_Sector">Sector</string>
     <string name="hint_jobrole">Jobrole</string>
+    <string name="hint_empid">Employee ID/Seller ID</string>
+    <string name="hint_location">Store Location/Location</string>
     <string name="hint_anyDisablity">AnyDisablity</string>
     <string name="hint_category">Category</string>
     <string name="hint_bank_name">Bank Name</string>
