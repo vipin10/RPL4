@@ -2,6 +2,20 @@
     <string name="app_name">TESTA</string>
     <string name="action_settings">Settings</string>
 
+    <!-- hint name of field for SignIn -->
+
+    <string name="booki">Radiant</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="read_it_together">Read it together</string>
+    <string name="skip">Skip</string>
+    <string name="login">Login</string>
+    <string name="email">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="forget_password">Forget Password.?</string>
+    <string name="Logout"><u>LOGOUT</u></string>
+
+
     <!-- hint name of field -->
 
 

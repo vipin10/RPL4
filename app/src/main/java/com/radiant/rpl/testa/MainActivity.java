@@ -96,9 +96,6 @@ ProgressDialog pd;
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
 
 
-
-
-
         awesomeValidation.addValidation(MainActivity.this,R.id.input_name,"[a-zA-Z\\s]+",R.string.err_msg_for_first_name);
         awesomeValidation.addValidation(MainActivity.this,R.id.input_last_name,"[a-zA-Z\\s]+",R.string.err_msg_for_last_name);
         awesomeValidation.addValidation(MainActivity.this,R.id.input_address1,"(.|\\s)*\\S(.|\\s)*",R.string.err_msg_for_address1);
@@ -108,6 +105,7 @@ ProgressDialog pd;
         awesomeValidation.addValidation(MainActivity.this,R.id.input_aadhar,"^[0-9]{12}$",R.string.err_msg_foraadhar);
         awesomeValidation.addValidation(MainActivity.this,R.id.input_mobile_no,"^[0-9]{10}$",R.string.err_msg_formobile);
         awesomeValidation.addValidation(MainActivity.this,R.id.input_bank_username,"[a-zA-Z\\s]+",R.string.err_msg_for_namein_bank);
+
         sector.setEnabled(false);
         employer.setEnabled(false);
 
@@ -132,6 +130,7 @@ ProgressDialog pd;
 
                  if(yearobirth.equals("Year")){
                     Toast.makeText(getApplicationContext(),"Year must be selected",Toast.LENGTH_LONG).show();
+
                 }
                else if (gender.equals("Select Gender")){
                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
@@ -167,7 +166,7 @@ ProgressDialog pd;
                 }
 
 
-                if(awesomeValidation.validate() && !encodedphoto.equals(null) && !yearobirth.equals("Year")) {
+                if(awesomeValidation.validate() ) {
 
                     //Toast.makeText(getApplicationContext(), "data", Toast.LENGTH_LONG).show();
                     Intent ii = new Intent(MainActivity.this, Reverify.class);
