@@ -204,7 +204,7 @@ public class TestQuestion extends AppCompatActivity {
 
 
     public void getData(){
-        j = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25";
+        j = "1,2,3,4,5,6";
         name=j.split(",");
         //img = new int[]{R.drawable.one,R.drawable.two1,R.drawable.three,R.drawable.five,R.drawable.one,R.drawable.one,R.drawable.one,R.drawable.one,R.drawable.one,R.drawable.one};
         cl1 = new CustomAdapter(name,con,img);
@@ -409,7 +409,7 @@ public class TestQuestion extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
                     String status= jobj.getString("status");
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("questions");
