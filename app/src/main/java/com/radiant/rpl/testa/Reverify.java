@@ -73,6 +73,8 @@ public class Reverify extends AppCompatActivity {
         aadharno_txt.setText(aadharno);
         bankacc_txt.setText(bankacc);
 
+
+
         btn_Register=findViewById(R.id.btn_Register);
 
         btn_Register.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +84,7 @@ public class Reverify extends AppCompatActivity {
                 getLname=lname_txt.getText().toString();
                 getMob=mob_txt.getText().toString();
                 getAadharno=aadharno_txt.getText().toString();
-                getBankacc=lname_txt.getText().toString();
+                getBankacc=bankacc_txt.getText().toString();
                 SaveDetail(getFname,getLname,getMob,getAadharno,getBankacc);
 
 
@@ -104,7 +106,7 @@ public class Reverify extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-
+                    System.out.println("sss"+response);
                     String status= jobj.getString("status");
                     if (status.equals("1")){
                           Intent iii=new Intent(Reverify.this,Registration_Done.class);
@@ -129,7 +131,7 @@ public class Reverify extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 pd.dismiss();
-                Toast.makeText(getApplicationContext(), "Error Saving the details", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "error+Error Saving the details", Toast.LENGTH_LONG).show();
             }
         })
 
@@ -161,16 +163,17 @@ public class Reverify extends AppCompatActivity {
                 map.put("district_id",districtt);
                 map.put("pincode",pincode1);
                 map.put("aadhar",aadharno);
-                map.put("sector_id",sectorr);
-                map.put("student_image",photouri);
+                map.put("ssc_id",sectorr);
+                map.put("sector_id","0");
                 map.put("bankname",bank1);
                 map.put("name_in_bank",nameasinbank1);
                 map.put("ifsc",iffccode1);
-                System.out.print(map);
+                map.put("student_image",photouri);
+                System.out.print("ggggggg"+map);
                 return map;
             }
         };
-        request.setRetryPolicy(new DefaultRetryPolicy(20000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(20000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
