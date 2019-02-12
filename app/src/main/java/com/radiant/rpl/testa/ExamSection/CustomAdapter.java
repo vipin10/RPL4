@@ -15,7 +15,7 @@ import radiant.rpl.radiantrpl.R;
 public class CustomAdapter extends BaseAdapter {
     String result[];
     Context con;
-    private static final int TYPE_HEADER = 1;
+   // private static final int TYPE_HEADER = 1;
 
     private static LayoutInflater inflater = null;
 
@@ -45,17 +45,13 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final holder  hld = new holder();
         View rowview;
-        if (position == TYPE_HEADER) {
-            //Inflating recycle view item layout
-           // View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.header, parent, false);
-            rowview = inflater.inflate(R.layout.header,null);
-        } else {
+
+
             rowview = inflater.inflate(R.layout.gdmainfortestquestion, null);
             hld.tv = rowview.findViewById(R.id.txt2);
             hld.tv.setText(result[position]);
-            hld.tv.setTextColor(Color.WHITE);
-        }
-        return rowview;
+            hld.tv.setTextColor(Color.BLACK);
+            return rowview;
     }
 
     public class holder

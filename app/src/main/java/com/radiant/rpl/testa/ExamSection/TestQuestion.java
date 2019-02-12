@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,7 @@ public class TestQuestion extends AppCompatActivity {
 
     //declaration for pellate
     Toolbar t1;
+    LinearLayout len;
     ImageButton imgRight;
     GridView drawer_Right;
     DrawerLayout mdrawerLayout;
@@ -127,6 +129,7 @@ public class TestQuestion extends AppCompatActivity {
         //getSupportActionBar().setDisplayShowHomeEnabled(true);
         drawer_Right = findViewById(R.id.drawer_right);
         imgRight= findViewById(R.id.imgRight);
+        len = findViewById(R.id.len1);
         mdrawerLayout = findViewById(R.id.activity_main1);
         mdrawerLayout.addDrawerListener(mDrawerToggle);
 
@@ -136,19 +139,23 @@ public class TestQuestion extends AppCompatActivity {
         imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+
                 Toast.makeText(getApplicationContext(),"open",Toast.LENGTH_LONG).show();
-                if(mdrawerLayout.isDrawerOpen(drawer_Right))
+                if(mdrawerLayout.isDrawerOpen(len))
                 {
 
-                    mdrawerLayout.closeDrawer(drawer_Right);
+                    mdrawerLayout.closeDrawer(len);
 
                 }
 
-                else if(!mdrawerLayout.isDrawerOpen(drawer_Right))
+                else if(!mdrawerLayout.isDrawerOpen(len))
                 {
                     Toast.makeText(getApplicationContext(),"close",Toast.LENGTH_LONG).show();
 
-                    mdrawerLayout.openDrawer(drawer_Right);
+                    mdrawerLayout.openDrawer(len);
                 }
 
 
@@ -204,7 +211,7 @@ public class TestQuestion extends AppCompatActivity {
 
 
     public void getData(){
-        j = "1,2,3,4,5,6";
+        j = "1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,8,9,0,4,2,5,7,5";
         name=j.split(",");
         //img = new int[]{R.drawable.one,R.drawable.two1,R.drawable.three,R.drawable.five,R.drawable.one,R.drawable.one,R.drawable.one,R.drawable.one,R.drawable.one,R.drawable.one};
         cl1 = new CustomAdapter(name,con,img);

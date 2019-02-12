@@ -18,20 +18,178 @@
     <include layout="@layout/app_bar"></include>
 
 
-
-
-        <GridView
-            android:id="@+id/drawer_right"
-            android:layout_gravity="end"
-            android:divider="@android:color/transparent"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/len1"
+            android:weightSum="4"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:numColumns="4"
-            android:padding="20dp"
-            android:horizontalSpacing="10dp"
-            android:verticalSpacing="10dp"
-            android:background="#529C9C">
-        </GridView>
+            android:layout_gravity="end">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#211E1E"
+                android:layout_weight="0.2">
+
+                <TextView
+                    android:textColor="@color/white"
+                    android:id="@+id/qno"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:text="Question:" />
+
+                <TextView
+                    android:id="@+id/qtv"
+                    android:textColor="@color/white"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                />
+
+            </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3.2">
+
+
+
+
+
+            <GridView
+                android:id="@+id/drawer_right"
+                android:divider="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:numColumns="4"
+                android:padding="10dp"
+                android:horizontalSpacing="5dp"
+                android:verticalSpacing="5dp"
+                android:scrollbars="vertical"
+                android:background="#453D3D">
+
+                
+                
+            </GridView>
+
+
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#201919"
+            android:orientation="vertical"
+            android:layout_weight="0.6">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+
+            <TextView
+                android:layout_marginLeft="10dp"
+
+                android:drawableLeft="@drawable/answered"
+                android:text="Answered"
+                android:id="@+id/ans"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                />
+
+
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/not_ans"
+                android:text="Not Answered"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:drawableLeft="@drawable/not_answered"
+
+
+                />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+
+            <TextView
+                android:layout_marginLeft="10dp"
+
+                android:id="@+id/marked_for_review"
+                android:text="Marked for Review"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:drawableLeft="@drawable/marked_for_review"
+                />
+
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/notvisted"
+                    android:text="Not visited"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:drawableLeft="@drawable/notvisited"
+                    />
+
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
+
+            <TextView
+                android:layout_marginLeft="10dp"
+
+                android:id="@+id/marked_for_review_answered"
+                android:text="Marked for review and answered"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:drawableLeft="@drawable/marked_for_review_answered"
+                />
+
+
+
+
+        </LinearLayout>
+
+
+
+        </LinearLayout>
+
 
 
 
