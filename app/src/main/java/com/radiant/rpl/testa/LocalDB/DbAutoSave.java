@@ -6,17 +6,21 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 public class DbAutoSave extends SQLiteOpenHelper {
     Cursor cursor;
     boolean result = false;
+    ArrayList<String> aa=new ArrayList<>();
+    public static final String DATABASE_NAME = "DbAutoSave";
     public DbAutoSave(Context context) {
-        super(context, "DbAutoSave", null, 1);
+        super(context, DATABASE_NAME, null, 1);
     }
-  String selectedop,Attenstatuss;
+    String selectedop,statuss;
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "create table autosave (ID INTEGER PRIMARY KEY AUTOINCREMENT,ASSESSORID TEXT,STUID TEXT,QUE TEXT,SELECTEDOPTION TEXT)";
-        String query1 = "create table attenstatus (ID INTEGER PRIMARY KEY AUTOINCREMENT,ASSESSORID TEXT,STUID TEXT,ATTSTATUS TEXT,FINALATT TEXT)";
+        String query = "create table autosave (ID INTEGER PRIMARY KEY AUTOINCREMENT,STUID TEXT,QUE TEXT,SELECTEDOPTION TEXT)";
+        String query1 = "create table autosave1 (ID INTEGER PRIMARY KEY AUTOINCREMENT,STUID TEXT,QUE TEXT,STATUS TEXT)";
         db.execSQL(query);
         db.execSQL(query1);
     }
@@ -24,53 +28,71 @@ public class DbAutoSave extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists autosave");
-        db.execSQL("drop table if exists attenstatus");
         onCreate(db);
     }
 
-    public void insertData(String assesid,String stuid, String queid,String queno ) {
+    public void insertData(String stuid, String queid,String queno) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("ASSESSORID",assesid);
-        cv.put("STUID",stuid );
-        cv.put("QUE", queid);
+        cv.put("STUID",queid );
+        cv.put("QUE", stuid);
         cv.put("SELECTEDOPTION",queno);
         db.insert("autosave", null, cv);
     }
-    public void insertddd(String assessorid,String stuid,String attensta,String finalatten){
-        SQLiteDatabase db=this.getWritableDatabase();
-        ContentValues cv=new ContentValues();
-        cv.put("ASSESSORID",assessorid);
-        cv.put("STUID",stuid);
-        cv.put("ATTSTATUS",attensta);
-        cv.put("FINALATT",finalatten);
-        db.insert("attenstatus",null,cv);
+
+    public void insertDataunanswered(String stuid,String queid, String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("STUID",stuid );
+        cv.put("QUE",queid);
+        cv.put("STATUS", status);
+        db.insert("autosave1", null, cv);
     }
 
-    public Cursor getAllData() {
+    public void insertDataunanswered1(String stuid, String queid,String queno,String queiddd){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from "+"attenstatus",null);
-        return res;
+        ContentValues cv = new ContentValues();
+        cv.put("STUID",queid );
+        cv.put("QUE", stuid);
+        cv.put("SELECTEDOPTION",queno);
+        db.update("autosave1",cv, "QUE = ?",new String[]{queiddd});
     }
 
     public Cursor getData(String queryData) {
         String[] selection = {queryData};
-        SQLiteDatabase db = this.getReadableDatabase();
-        cursor = db.rawQuery("select * from autosave", null);
-        cursor.close();
-        String query = "select * from autosave where NAME =?";
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "select * from autosave where STUID =?"+"ORDER BY"+" QUE ASC";
         cursor = db.rawQuery(query, selection);
         if (cursor.getCount() != 0) {
-            if (cursor.moveToLast()) {
-                //result = true;
-            }
         }
-        cursor.close();
         return cursor;
     }
 
-    public String getDataOfSingleClient(String Que, String que2){
-        String selectQuery = "SELECT  * FROM " + "autosave" + " WHERE " + "STUID" + "='" + Que +  "'"+"AND "+" QUE "+"='" + que2 +  "'" ;
+    public Cursor getData1(String queryData) {
+        String[] selection = {queryData};
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "select * from autosave1 where STUID =?"+"ORDER BY"+" QUE ASC";
+        cursor = db.rawQuery(query, selection);
+        if (cursor.getCount() != 0) {
+        }
+        return cursor;
+    }
+
+
+
+    public String getDatasinglestatus(String queryData1) {
+        String[] selection = {queryData1};
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "select STATUS from autosave1 where QUE =?";
+        cursor = db.rawQuery(query, selection);
+        if (cursor.getCount() != 0) {
+        }
+        return query;
+    }
+
+
+    public String getDataOfSingleClient(String Que){
+        String selectQuery = "SELECT  * FROM " + "autosave" + " WHERE " + "QUE" + "='" + Que +  "'";
 
         SQLiteDatabase sqLiteDatabase=this.getReadableDatabase();
         Cursor cursor=sqLiteDatabase.rawQuery(selectQuery,null);
@@ -84,58 +106,35 @@ public class DbAutoSave extends SQLiteOpenHelper {
         }
 
     }
-    public String getAttenStatus(String queryy){
-        String selectQuery = "SELECT  * FROM " + "attenstatus" + " WHERE " + "STUID" + "='" + queryy +  "'";
 
-        SQLiteDatabase sqdb=this.getReadableDatabase();
-        Cursor cursor=sqdb.rawQuery(selectQuery,null);
-        if (cursor.getCount()>0){
-            cursor.moveToNext();
-            selectedop=cursor.getString(2);
-            return selectedop;
-        }
-        else {
-            return  null;
-        }
-    }
+    public String getD(String q){
+        String selectq="SELECT  * FROM " + "autosave" + " WHERE " + "QUE" + "='" + q +  "'";
 
-    public void updateData(String assesid, String stuid,String que,String option){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("ASSESSORID",assesid );
-        cv.put("STUID",stuid );
-        cv.put("QUE", que);
-        cv.put("SELECTEDOPTION",option);
-        db.update("autosave",cv, "QUE = ?",new String[]{que});
-        //db.update("autosave",cv, "_id = ?", new String[]{id});
-
-    }
-
-    public void updateD(String assessorid, String stuid,String attenstatus,String finalatten){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("ASSESSORID",assessorid );
-        cv.put("STUID",stuid );
-        cv.put("ATTSTATUS", attenstatus);
-        cv.put("FINALATT",finalatten);
-        db.update("attenstatus",cv, "STUID = ?",new String[]{finalatten});
-    }
-
-    public String getDataOfAtten(String stuid){
-        String selectQuery = "SELECT  * FROM " + "attenstatus" + " WHERE " + "STUID" + "='" + stuid +  "'";
 
         SQLiteDatabase sqLiteDatabase=this.getReadableDatabase();
-        Cursor cursor=sqLiteDatabase.rawQuery(selectQuery,null);
+        Cursor cursor=sqLiteDatabase.rawQuery(selectq,null);
         if (cursor.getCount()>0){
-            cursor.moveToNext();
-            selectedop=cursor.getString(2);
-            return selectedop;
+            cursor.moveToFirst();
+            String aa=cursor.getString(3);
+            return aa;
+
         }
         else {
             return  null;
         }
 
     }
+
+    public void updateData(String stuid, String queid,String queno,String queiddd){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("STUID",queid );
+        cv.put("QUE", stuid);
+        cv.put("SELECTEDOPTION",queno);
+        db.update("autosave",cv, "QUE = ?",new String[]{queiddd});
+    }
+
+
 
     private void onDelete() {
         SQLiteDatabase db = this.getWritableDatabase();

@@ -5,6 +5,20 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
 
 
+   <!-- <TextView
+        android:id="@+id/mark"
+        android:textColor="@color/darkBlueColor"
+        android:gravity="center_vertical"
+        android:layout_width="0.0dip"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="15.0dip"
+        android:text="Review Later"
+        android:drawablePadding="6.0dip"
+        android:layout_weight="1.0"
+        style="@style/text_h4" />-->
+
+
+
     <View android:background="#73ffffff" android:layout_width="1.0dip" android:layout_height="fill_parent" />
 
     <TextView android:textColor="@color/colorAccent" android:gravity="center"

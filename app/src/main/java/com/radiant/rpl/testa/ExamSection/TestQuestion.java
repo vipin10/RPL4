@@ -1,6 +1,7 @@
 package com.radiant.rpl.testa.ExamSection;
 
 import android.app.ProgressDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -30,6 +32,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
 import com.radiant.rpl.testa.MainActivity;
 import com.radiant.rpl.testa.MyNetwork;
@@ -44,24 +47,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 import radiant.rpl.radiantrpl.R;
 
 public class TestQuestion extends AppCompatActivity {
-
-
-    private static final long START_TIME_IN_MILLIS = 6000000;
-    private static final long  START_TIME_IN_MILLISR=00000;
-    private android.os.CountDownTimer CountDownTimer;
-    private boolean TimerRunning;
-    private long TimeLeftInMillis;
-    private long EndTime;
     FragmentParent fragmentParent;
-    TextView textView,finalSubmitbutton;
-    DbAutoSave dbAutoSave;
-
-    //declaration for pellate
+    TextView textView,finalSubmitbutton,reviewlaterr;
+    Cursor cursor,cursor11;
     Toolbar t1;
     LinearLayout len;
     ImageButton imgRight;
@@ -70,22 +64,28 @@ public class TestQuestion extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
     Context con=this;
     CustomAdapter cl1,cl2;
-    int img[];
     String name[];
     String j;
-
-
-
-    String namee1;
+    ArrayList<String> studentidlist;
+    ArrayList<String> questioniddd;
+    ArrayList<String> answeredoptionn;
+    ArrayList<String> statusoption;
     ProgressDialog pdd;
-    Cursor cr;
-    SharedPreferences sharedPreferences,spp;
-    public static final String mypreference = "mypref1";
-    public static final String mypreferences1= "mypref";
-    String currentatten,assessoridd,batchidd1;
+    String aaa,bbb,ccc;
+    DbAutoSave dbAutoSave;
+    SQLiteDatabase mDatabase;
+    ArrayList<SetterGetter> employeeList;
     ArrayList<String> aa=new ArrayList<>();
     ArrayList<String> bb=new ArrayList<>();
+    ArrayList<String> queid=new ArrayList<>();
     ArrayList<String[]> options=new ArrayList<>();
+    ArrayList<String> options1=new ArrayList<>();
+    ArrayList<String> options2=new ArrayList<>();
+    ArrayList<String> options3=new ArrayList<>();
+    ArrayList<String> options4=new ArrayList<>();
+    ArrayList<String> statuss=new ArrayList<>();
+
+    SetterGetter setterGetter;
     String[] title = {
             "New Delhi",
             "Mumbai",
@@ -116,147 +116,74 @@ public class TestQuestion extends AppCompatActivity {
             "Ramanand sagar",
             "Vishwamitra",
     };
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_question);
-
-        t1 = findViewById(R.id.toolbar);
-        setSupportActionBar(t1);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
-        drawer_Right = findViewById(R.id.drawer_right);
-        imgRight= findViewById(R.id.imgRight);
-        len = findViewById(R.id.len1);
-        mdrawerLayout = findViewById(R.id.activity_main1);
-        mdrawerLayout.addDrawerListener(mDrawerToggle);
-
-
-
-
-        imgRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-
-                Toast.makeText(getApplicationContext(),"open",Toast.LENGTH_LONG).show();
-                if(mdrawerLayout.isDrawerOpen(len))
-                {
-
-                    mdrawerLayout.closeDrawer(len);
-
-                }
-
-                else if(!mdrawerLayout.isDrawerOpen(len))
-                {
-                    Toast.makeText(getApplicationContext(),"close",Toast.LENGTH_LONG).show();
-
-                    mdrawerLayout.openDrawer(len);
-                }
-
-
-            }
-        });
-
-        getData();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         getIDs();
-        dbAutoSave = new DbAutoSave(getApplicationContext());
-        spp=getSharedPreferences(mypreferences1,Context.MODE_PRIVATE);
-        sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        namee1=sharedPreferences.getString("StuName","");
-        assessoridd=spp.getString("assessorid","");
-        //setEvents();
-//        aa.add("1");
-//        aa.add("2");
-//        aa.add("3");
-//        aa.add("4");
-//        aa.add("5");
-//        bb.add("Where is capital of India.");
-//        bb.add("Who is Prime minister of india.");
-//        bb.add("who is chief Minister of Delhi.");
-//        bb.add("Under whose captaincy India won world Cup 1983.");
-//        bb.add("Who wrote Ramayana.");
+        t1=findViewById(R.id.toolbar);
+        setSupportActionBar(t1);
+        studentidlist=new ArrayList<>();
+        questioniddd=new ArrayList<>();
+        answeredoptionn =new ArrayList<>();
         options.add(title);
         options.add(title1);
         options.add(title2);
         options.add(title3);
         options.add(title4);
-        currentatten=sharedPreferences.getString("currentatten","");
-        for (int ii=0;ii<=aa.size()-1;ii++) {
-
-            fragmentParent.addPage(aa.get(ii) + "",bb.get(ii));
-
-        }
-    }
+        employeeList=new ArrayList<>();
+        dbAutoSave = new DbAutoSave(getApplicationContext());
+        mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
+        Questionlist();
+        setterGetter =new SetterGetter();
 
 
-    public void getData(){
-        j = "1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,8,9,0,4,2,5,7,5";
-        name=j.split(",");
-        //img = new int[]{R.drawable.one,R.drawable.two1,R.drawable.three,R.drawable.five,R.drawable.one,R.drawable.one,R.drawable.one,R.drawable.one,R.drawable.one,R.drawable.one};
-        cl1 = new CustomAdapter(name,con,img);
-        cl2 = new CustomAdapter(name,con,img);
-        drawer_Right.setAdapter(cl1);
+        imgRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mdrawerLayout.isDrawerOpen(len)){
+                    mdrawerLayout.closeDrawer(len);
+                    getData();
+                    if (statuss.size()>0){
+                        statuss.clear();
+                        getStatusdata();
+                    }else {
+                        getStatusdata();
+                    }
+                }
+                else if (!mdrawerLayout.isDrawerOpen(len)){
+                    mdrawerLayout.openDrawer(len);
+                    getData();
+                    if (statuss.size()>0){
+                        statuss.clear();
+                        getStatusdata();
+                    }else {
+                        getStatusdata();
+                    }
 
+                }
+            }
+        });
     }
 
 
     private void getIDs() {
         fragmentParent = (FragmentParent) this.getSupportFragmentManager().findFragmentById(R.id.fragmentParent);
         View vv=findViewById(R.id.count_down_strip);
+        reviewlaterr=vv.findViewById(R.id.mark);
         textView=vv.findViewById(R.id.timer);
         finalSubmitbutton=vv.findViewById(R.id.finish);
+        drawer_Right=findViewById(R.id.drawer_right);
+        imgRight=findViewById(R.id.imgRight);
+        len=findViewById(R.id.len1);
+        mdrawerLayout=findViewById(R.id.activity_main1);
+        mdrawerLayout.addDrawerListener(mDrawerToggle);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Questionlist();
-
-        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-
-        TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
-        TimerRunning = prefs.getBoolean("timerRunning", false);
-
-        updateCountDownText();
-        updateButtons();
-        resetTimer();
-
-        if (TimerRunning) {
-            EndTime = prefs.getLong("endTime", 0);
-            TimeLeftInMillis = EndTime - System.currentTimeMillis();
-
-            if (TimeLeftInMillis < 0) {
-                TimeLeftInMillis = 0;
-                TimerRunning = false;
-                updateCountDownText();
-                updateButtons();
-            } else {
-                startTimer();
-            }
-        }
-
         finalSubmitbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,12 +192,7 @@ public class TestQuestion extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface arg0, int arg1) {
-                                dbAutoSave.updateD(assessoridd,namee1,currentatten,"1");
-                                //dbAutoSave.insertddd(assessoridd,namee1,currentatten,"1");
-                                //resetTimer();
-                                submitTimer();
-                                Intent ii=new Intent(TestQuestion.this, SignInAct.class);
-                                startActivity(ii);
+                                getalldata();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -281,127 +203,13 @@ public class TestQuestion extends AppCompatActivity {
                         .show();
             }
         });
-        startTimer();
-    }
 
-
-    private void startTimer() {
-        EndTime = System.currentTimeMillis() + TimeLeftInMillis;
-
-        CountDownTimer = new CountDownTimer(TimeLeftInMillis, 1000) {
+       /* reviewlaterr.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTick(long millisUntilFinished) {
-                TimeLeftInMillis = millisUntilFinished;
-                updateCountDownText();
+            public void onClick(View v) {
             }
-
-            @Override
-            public void onFinish() {
-              /*  AlertDialog alertbox = new AlertDialog.Builder(getApplicationContext())
-                        .setMessage("Click Yes to schedule Test for Final Submission.")
-                         .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface arg0, int arg1) {
-
-
-                            }
-                        })
-
-                        .show();*/
-
-
-
-
-
-
-
-                // textView.setText("done!");
-                // resetTimer();
-                TimerRunning = false;
-                updateButtons();
-                resetTimer();
-
-
-                AlertDialog alertDialog = new AlertDialog.Builder(textView.getContext())
-                        .setMessage("Your time is Khallash!!.").show();
-            }
-        }.start();
-
-        TimerRunning = true;
-        updateButtons();
+        });*/
     }
-
-    private void pauseTimer() {
-        CountDownTimer.cancel();
-        TimerRunning = false;
-        updateButtons();
-    }
-
-    private void resetTimer() {
-        TimeLeftInMillis = START_TIME_IN_MILLIS;
-        updateCountDownText();
-        updateButtons();
-    }
-
-    private void submitTimer(){
-        TimeLeftInMillis=START_TIME_IN_MILLISR;
-        updateCountDownText();
-        updateButtons();
-        TimerRunning = false;
-        CountDownTimer.cancel();
-    }
-
-
-
-    private void updateCountDownText() {
-        int minutes = (int) (TimeLeftInMillis / 1000) / 60;
-        int seconds = (int) (TimeLeftInMillis / 1000) % 60;
-
-        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-
-        textView.setText(timeLeftFormatted);
-    }
-
-    private void updateButtons() {
-        if (TimerRunning) {
-          /*  ButtonReset.setVisibility(View.INVISIBLE);
-            ButtonStartPause.setText("Pause");*/
-        } else {
-            /*ButtonStartPause.setText("Start");*/
-
-            if (TimeLeftInMillis < 1000) {
-                /*ButtonStartPause.setVisibility(View.INVISIBLE);*/
-            } else {
-                /*ButtonStartPause.setVisibility(View.VISIBLE);*/
-            }
-
-            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
-                /*ButtonReset.setVisibility(View.VISIBLE);*/
-            } else {
-                /*ButtonReset.setVisibility(View.INVISIBLE);*/
-            }
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        editor.putLong("millisLeft", TimeLeftInMillis);
-        editor.putBoolean("timerRunning", TimerRunning);
-        editor.putLong("endTime", EndTime);
-
-        editor.apply();
-
-        if (CountDownTimer != null) {
-            CountDownTimer.cancel();
-        }
-    }
-
 
 
     private void Questionlist() {
@@ -416,25 +224,25 @@ public class TestQuestion extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                   // Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
                     String status= jobj.getString("status");
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("questions");
                         for (int i = 0; i < jsonArray.length(); i++) {
-
                             JSONObject c = jsonArray.getJSONObject(i);
-
                             aa.add(c.getString("question_id"));
                             bb.add(c.getString("question"));
+                            queid.add(c.getString("question_id"));
+                            options1.add(c.getString("option1"));
+                            options2.add(c.getString("option2"));
+                            options3.add(c.getString("option3"));
+                            options4.add(c.getString("option4"));
 
-                         /*   Studentname.add(c.getString("student_id"));
-                            mob.add(c.getString("mobile"));
-                            Email.add(c.getString("email"));
-                            Dob.add(c.getString("dob"));*/
                         }
-                        //Toast.makeText(getApplicationContext(),"data is"+aa+bb,Toast.LENGTH_LONG).show();
+
                         for (int ii=0;ii<=aa.size()-1;ii++) {
-                            fragmentParent.addPage(aa.get(ii) + "",bb.get(ii));
+
+                            fragmentParent.addPage(aa.get(ii) + "",bb.get(ii),options1.get(ii),options2.get(ii),options3.get(ii),options4.get(ii));
 
                         }
 
@@ -475,7 +283,7 @@ public class TestQuestion extends AppCompatActivity {
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("batch_id","RASCI");
+                map.put("batch_id", "RASCI");
                 map.put("language","en");
 
                 return map;
@@ -485,41 +293,81 @@ public class TestQuestion extends AppCompatActivity {
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
+    CountDownTimer tt= new CountDownTimer(300000, 1000) {
 
+        public void onTick(long millisUntilFinished) {
 
+            textView.setText( String.format("%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
+                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));  ;
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            exitByBackKey();
-
-            return true;
         }
-        return super.onKeyDown(keyCode, event);
+
+        public void onFinish() {
+            textView.setText("done!");
+        }
+
+    }.start();
+
+    public void getalldata(){
+        cursor=dbAutoSave.getData("1");
+        ArrayList<SetterGetter> dataList = new ArrayList<SetterGetter>();
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            do {
+                SetterGetter data = new SetterGetter();
+                data.student_id = cursor.getString(1);
+                data.que_id = cursor.getString(2);
+                data.selected_answer = cursor.getString(3);
+
+                questioniddd.add(bbb);
+                answeredoptionn.add(ccc);
+                dataList.add(data);
+
+            } while (cursor.moveToNext());
+            Datalist listOfData = new Datalist();
+            listOfData.dataList = dataList;
+
+            Gson gson = new Gson();
+            String jsonInString = gson.toJson(listOfData); // Here you go!
+            System.out.println("aasddd"+jsonInString);
+            cursor.close();
+        }
     }
 
-    protected void exitByBackKey() {
 
-        AlertDialog alertbox = new AlertDialog.Builder(this)
-                .setMessage("The exam will continue and Timer will keep running.Are you sure you want to exit")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
-                    // do something when the button is clicked
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        moveTaskToBack(true);
-                        //finish();
+      public void getStatusdata(){
+        cursor11=dbAutoSave.getData1("1");
+          if (cursor11 != null) {
+              cursor11.moveToFirst();
 
-                        //close();
+              do {
+                  aaa = cursor11.getString(3);
+                  // Add into the ArrayList here
 
+                  statuss.add(aaa);
 
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                  System.out.println("aaaabbb"+statuss);
+              } while (cursor11.moveToNext());
 
-                    // do something when the button is clicked
-                    public void onClick(DialogInterface arg0, int arg1) {
-                    }
-                })
-                .show();
+              cursor11.close();
+
+          }
+      }
+
+    public void getData(){
+            cl1 = new CustomAdapter(aa, con, statuss);
+            cl2 = new CustomAdapter(aa, con, statuss);
+            drawer_Right.setAdapter(cl1);
 
     }
 

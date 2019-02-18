@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="1"
+        android:weightSum="2"
         android:layout_marginLeft="5dp"
         >
         <TextView
@@ -17,8 +17,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="1.)"
-            android:layout_weight=".1"
+            android:text="2.)"
+            android:layout_weight=".3"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Where is the capital of India."
-            android:layout_marginLeft="5dp"
-            android:layout_weight=".9"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1.7"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </LinearLayout>
@@ -224,6 +224,7 @@
         android:visibility="invisible"
         android:text="Question no. "
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
 
 
 </RelativeLayout>

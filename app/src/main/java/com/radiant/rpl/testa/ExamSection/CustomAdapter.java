@@ -10,25 +10,33 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.radiant.rpl.testa.LocalDB.DbAutoSave;
+
+import java.util.ArrayList;
+
 import radiant.rpl.radiantrpl.R;
 
-public class CustomAdapter extends BaseAdapter {
+public class CustomAdapter extends BaseAdapter{
     String result[];
     Context con;
-   // private static final int TYPE_HEADER = 1;
+    String aa;
+    ArrayList<String> queidd=new ArrayList<>();
+    ArrayList<String> statussss=new ArrayList<>();
+    String img[];
+    DbAutoSave dbAutoSave;
 
     private static LayoutInflater inflater = null;
 
-    public CustomAdapter(String[] result, Context con, int[] img) {
-        this.result = result;
+    public CustomAdapter(ArrayList<String> queidd, Context con, ArrayList<String> statussss) {
+        this.queidd = queidd;
         this.con = con;
-
+        this.statussss=statussss;
         inflater = (LayoutInflater)con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return result.length;
+        return queidd.size();
     }
 
     @Override
@@ -46,19 +54,37 @@ public class CustomAdapter extends BaseAdapter {
         final holder  hld = new holder();
         View rowview;
 
-
+        if(con instanceof Statuss){
+            ((Statuss)con).getStatus();
+        }
             rowview = inflater.inflate(R.layout.gdmainfortestquestion, null);
             hld.tv = rowview.findViewById(R.id.txt2);
-            hld.tv.setText(result[position]);
-            hld.tv.setTextColor(Color.BLACK);
+            hld.tv.setText(queidd.get(position));
+            int ii=statussss.size();
+            if (position<ii){
+            if (statussss.get(position).equals("1")){
+                hld.tv.setTextColor(Color.GREEN);
+            }else if (statussss.get(position).equals("2")){
+               // hld.tv.setTextColor(R.color.purple);
+                hld.tv.setTextColor(con.getResources().getColor(R.color.purple));
+            }else {
+                hld.tv.setTextColor(Color.BLUE);
+            }
+            }else {
+                hld.tv.setTextColor(Color.BLACK);
+            }
             return rowview;
     }
+
+
 
     public class holder
     {
         TextView tv;
 
     }
+
+
 
 }
 
