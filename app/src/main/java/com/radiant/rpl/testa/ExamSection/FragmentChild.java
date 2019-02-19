@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
     DbAutoSave dbAutoSave;
     String idd;
     String query;
+    boolean statusvalue;
     HashMap<String,String> hm=new HashMap<>();
 
     @Nullable
@@ -55,6 +57,8 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
     }
 
     private void getIDs(View view) {
+        markforrevieww=view.findViewById(R.id.mark);
+        reset=view.findViewById(R.id.reset);
         textViewChildName =view.findViewById(R.id.Quesnoo);
         t1=view.findViewById(R.id.que);
         optiona=view.findViewById(R.id.optiona);
@@ -137,6 +141,49 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
 
         }
         //Show Answer updated in Db
+        l1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+
+        l2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+        l3.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+        l4.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+
+        if (statusvalue){
+            Toast.makeText(getContext(),"ffff",Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(getContext(),"gggg",Toast.LENGTH_LONG).show();
+        }
+        markforrevieww.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"mmmm"+dbAutoSave.getDataOfSingleClientstatus(hm.get(quename)),Toast.LENGTH_LONG).show();
+             /*   if (dbAutoSave.getDataOfSingleClientstatus(hm.get(quename))!=null){
+
+                }else{
+
+                }*/
+            }
+        });
     }
 
     private void setEvents() {
@@ -159,10 +206,12 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 idd=dbAutoSave.getDataOfSingleClient(hm.get(quename));
                 if (idd!=(null)){
                     dbAutoSave.updateData(hm.get(quename),dummystuid,titlea.getText().toString(),idd);
+                    statusvalue=true;
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titlea.getText().toString());
-                  //  dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    statusvalue=true;
                 }
                 break;
             case R.id.option2:
@@ -170,10 +219,12 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 idd=dbAutoSave.getDataOfSingleClient(hm.get(quename));
                 if (idd!=(null)){
                     dbAutoSave.updateData(hm.get(quename),dummystuid,titleb.getText().toString(),idd);
+                    statusvalue=true;
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titleb.getText().toString());
-                  //  dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    statusvalue=true;
                 }
                 break;
             case R.id.option3:
@@ -181,10 +232,12 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 idd=dbAutoSave.getDataOfSingleClient(hm.get(quename));
                 if (idd!=(null)){
                     dbAutoSave.updateData(hm.get(quename),dummystuid,titlec.getText().toString(),idd);
+                    statusvalue=true;
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titlec.getText().toString());
-                 //   dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    statusvalue=true;
                 }
                 break;
             case  R.id.option4:
@@ -193,15 +246,15 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 idd=dbAutoSave.getDataOfSingleClient(hm.get(quename));
                 if (idd!=(null)){
                     dbAutoSave.updateData(hm.get(quename),dummystuid,titled.getText().toString(),idd);
+                    statusvalue=true;
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename), dummystuid,  titled.getText().toString());
-                   // dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    statusvalue=true;
                 }
                 break;
-
-
-            default:
+                default:
                 break;
         }
     }

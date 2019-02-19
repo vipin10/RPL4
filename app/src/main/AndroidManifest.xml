@@ -33,6 +33,7 @@
         <activity
             android:name="com.radiant.rpl.testa.MainActivity"
             android:theme="@style/AppTheme1" />
+
         <activity android:name="com.radiant.rpl.testa.Registration_Done" />
         <activity
             android:name="com.radiant.rpl.testa.ExamSection.TestQuestion"

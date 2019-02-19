@@ -31,6 +31,7 @@ public class DbAutoSave extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //Insert pallete status of the questions
     public void insertData(String stuid, String queid,String queno) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -40,6 +41,7 @@ public class DbAutoSave extends SQLiteOpenHelper {
         db.insert("autosave", null, cv);
     }
 
+    //Update pallete status of the questions
     public void insertDataunanswered(String stuid,String queid, String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -78,6 +80,22 @@ public class DbAutoSave extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //Get status of the single question
+    public String getDataOfSingleClientstatus(String Que){
+        String selectQuery = "SELECT  * FROM " + "autosave1" + " WHERE " + "QUE" + "='" + Que +  "'";
+
+        SQLiteDatabase sqLiteDatabase=this.getReadableDatabase();
+        Cursor cursor=sqLiteDatabase.rawQuery(selectQuery,null);
+        if (cursor.getCount()>0){
+            cursor.moveToNext();
+            selectedop=cursor.getString(2);
+            return selectedop;
+        }
+        else {
+            return  null;
+        }
+
+    }
 
 
     public String getDatasinglestatus(String queryData1) {

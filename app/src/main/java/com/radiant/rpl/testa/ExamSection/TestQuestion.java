@@ -8,24 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -34,18 +26,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
-import com.radiant.rpl.testa.MainActivity;
 import com.radiant.rpl.testa.MyNetwork;
-import com.radiant.rpl.testa.SignInAct;
-import com.radiant.rpl.testa.Testinstruction;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -201,6 +187,8 @@ public class TestQuestion extends AppCompatActivity {
                             }
                         })
                         .show();
+              /*  Intent ii=new Intent(TestQuestion.this, TestQuestion1.class);
+                startActivity(ii);*/
             }
         });
 
@@ -241,8 +229,6 @@ public class TestQuestion extends AppCompatActivity {
                         }
 
                         for (int ii=0;ii<=aa.size()-1;ii++) {
-                              Cursor cursor=dbAutoSave.getData1("1");
-                             dbAutoSave.insertDataunanswered("1",aa.get(ii),"0");
                             fragmentParent.addPage(aa.get(ii) + "",bb.get(ii),options1.get(ii),options2.get(ii),options3.get(ii),options4.get(ii));
 
                         }

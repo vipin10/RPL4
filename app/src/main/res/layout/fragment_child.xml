@@ -201,30 +201,45 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </LinearLayout>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#A9A9A9"
-        android:layout_marginTop="1dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_below="@id/option4"/>
-
-    <TextView
-        android:id="@+id/textViewChild1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="left"
-        android:layout_marginStart="284dp"
-        android:layout_marginLeft="284dp"
-        android:layout_marginTop="489dp"
-        android:visibility="invisible"
-        android:text="Question no. "
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight=".1"
+        android:id="@+id/appbar_layout"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/bg_card_shadow"
+        android:layout_marginLeft="4.0dip"
+        android:layout_marginTop="2.0dip"
+        android:layout_marginRight="4.0dip"
+        >
+
+        <TextView
+            android:id="@+id/mark"
+            android:textColor="@color/darkBlueColor"
+            android:gravity="center_vertical"
+            android:layout_width="0.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="15.0dip"
+            android:text="Review Later"
+            android:layout_marginRight="5dp"
+            android:drawablePadding="6.0dip"
+            android:layout_weight="1.0"
+            style="@style/text_h4" />
+
+        <View android:background="#73ffffff" android:layout_width="1.0dip"
+            android:layout_height="fill_parent" />
+
+
+        <TextView android:textColor="@color/colorPrimaryDark" android:gravity="center"
+            android:layout_gravity="center" android:id="@+id/reset"
+            android:layout_width="0.0dip" android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
+            android:text="Reset" android:layout_weight="1.0" style="@style/text_h4" />
+
+    </LinearLayout>
 
 </RelativeLayout>

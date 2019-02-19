@@ -22,11 +22,9 @@ public class FragmentParent extends Fragment {
     // private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-    TextView ttv,mrreview,resetque;
     DbAutoSave dbAutoSave;
-    String dummystuidd="1";
-    int positionn=0;
     String queidd,queiddd;
+    int pageno;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,16 +32,14 @@ public class FragmentParent extends Fragment {
         dbAutoSave=new DbAutoSave(getContext());
         getIDs(view);
 
-        //setEvents();
         return view;
     }
 
     private void getIDs(View view) {
         viewPager = (ViewPager) view.findViewById(R.id.my_viewpager);
-        mrreview=view.findViewById(R.id.mark);
-        resetque=view.findViewById(R.id.reset);
         adapter = new ViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapter);
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             Boolean first = true;
             @Override
@@ -56,28 +52,21 @@ public class FragmentParent extends Fragment {
             }
             @Override
             public void onPageSelected(int position) {
-                int i=viewPager.getCurrentItem();
+                pageno=viewPager.getCurrentItem();
+
             }
 
             @Override
             public void onPageScrollStateChanged(int i) {
-
             }
         });
-
 
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mrreview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("stuid is"+queidd+" queidd is"+queiddd);
-                dbAutoSave.insertDataunanswered(queidd,dummystuidd,"2");
-            }
-        });
+
     }
 
     public void addPage(String pagename, String que, String op1, String op2, String op3, String op4) {
