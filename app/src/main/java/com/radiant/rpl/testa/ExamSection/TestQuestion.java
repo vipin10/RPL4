@@ -241,7 +241,8 @@ public class TestQuestion extends AppCompatActivity {
                         }
 
                         for (int ii=0;ii<=aa.size()-1;ii++) {
-
+                              Cursor cursor=dbAutoSave.getData1("1");
+                             dbAutoSave.insertDataunanswered("1",aa.get(ii),"0");
                             fragmentParent.addPage(aa.get(ii) + "",bb.get(ii),options1.get(ii),options2.get(ii),options3.get(ii),options4.get(ii));
 
                         }

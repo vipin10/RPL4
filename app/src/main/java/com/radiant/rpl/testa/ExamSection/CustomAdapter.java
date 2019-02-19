@@ -67,10 +67,13 @@ public class CustomAdapter extends BaseAdapter{
             }else if (statussss.get(position).equals("2")){
                // hld.tv.setTextColor(R.color.purple);
                 hld.tv.setTextColor(con.getResources().getColor(R.color.purple));
-            }else {
+            }else if (statussss.get(position).equals("0")){
                 hld.tv.setTextColor(Color.BLUE);
-            }
             }else {
+                hld.tv.setTextColor(Color.BLACK);
+            }
+            }
+            else {
                 hld.tv.setTextColor(Color.BLACK);
             }
             return rowview;

@@ -162,7 +162,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titlea.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                  //  dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
                 }
                 break;
             case R.id.option2:
@@ -173,7 +173,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titleb.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                  //  dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
                 }
                 break;
             case R.id.option3:
@@ -184,7 +184,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titlec.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                 //   dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
                 }
                 break;
             case  R.id.option4:
@@ -196,7 +196,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename), dummystuid,  titled.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                   // dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
                 }
                 break;
 
