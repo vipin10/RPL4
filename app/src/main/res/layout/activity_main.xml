@@ -307,6 +307,22 @@
                 android:spinnerMode="dialog"
                 android:textSize="14sp"
                 />
+            <Spinner
+                android:id="@+id/input_layout_Employer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="2dp"
+                android:paddingStart="5dp"
+                android:layout_marginTop="2dp"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                />
 
             <Spinner
                 android:id="@+id/input_layout_Sector"
@@ -326,7 +342,7 @@
                 />
 
             <Spinner
-                android:id="@+id/input_layout_Employer"
+                android:id="@+id/input_layout_jobrole"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background"
@@ -342,19 +358,22 @@
                 android:textSize="14sp"
                 />
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_jobrole"
+            <Spinner
+                android:id="@+id/input_layout_prefferedlanguage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/input_jobrole"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:inputType="number"
-                    android:hint="@string/hint_jobrole" />
-            </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="2dp"
+                android:paddingStart="5dp"
+                android:layout_marginTop="2dp"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:spinnerMode="dialog"
+                android:textSize="14sp"
+                />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_empid"
@@ -380,7 +399,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:hint="@string/hint_location" />
             </android.support.design.widget.TextInputLayout>
 
@@ -466,19 +485,49 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 >
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
                     android:id="@+id/input_photograph"
-                    android:text="Click Photo"
+                    android:background="@drawable/selfphoto"
                     android:layout_weight="1"
+                    android:scaleType="fitXY"
                     android:layout_marginRight="4dp"
                     />
 
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/input_photograph_aadhar"
+                    android:background="@drawable/aadharphoto"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:layout_marginRight="4dp"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                >
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I am willing to declare my aadhar details for PMKVY RPL4 project"
+                    />
 
 
             </LinearLayout>
@@ -488,6 +537,7 @@
                 android:layout_height="50dp"
                 android:text="Register"
                 android:textSize="24sp"
+                android:layout_marginTop="10dp"
                 android:background="@color/colorPrimary"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="60dp"

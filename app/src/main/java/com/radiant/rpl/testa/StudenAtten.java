@@ -168,7 +168,6 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         super.onResume();
 
         if (!checkPlayServices()) {
-            //locationTv.setText("You need to install Google Play Services to use the App properly");
             Toast.makeText(this,"You need to install Google Play Services to use the App properly",Toast.LENGTH_LONG).show();
         }
     }

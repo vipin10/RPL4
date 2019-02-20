@@ -70,6 +70,7 @@ public class TestQuestion extends AppCompatActivity {
     ArrayList<String> options3=new ArrayList<>();
     ArrayList<String> options4=new ArrayList<>();
     ArrayList<String> statuss=new ArrayList<>();
+    ArrayList<String> questatus=new ArrayList<>();
 
     SetterGetter setterGetter;
     String[] title = {
@@ -311,8 +312,8 @@ public class TestQuestion extends AppCompatActivity {
                 data.que_id = cursor.getString(2);
                 data.selected_answer = cursor.getString(3);
 
-                questioniddd.add(bbb);
-                answeredoptionn.add(ccc);
+                /*questioniddd.add(bbb);
+                answeredoptionn.add(ccc);*/
                 dataList.add(data);
 
             } while (cursor.moveToNext());
@@ -339,10 +340,11 @@ public class TestQuestion extends AppCompatActivity {
 
               do {
                   aaa = cursor11.getString(3);
+                  bbb = cursor11.getString(2);
                   // Add into the ArrayList here
 
                   statuss.add(aaa);
-
+                  questatus.add(bbb);
                   System.out.println("aaaabbb"+statuss);
               } while (cursor11.moveToNext());
 
@@ -352,8 +354,8 @@ public class TestQuestion extends AppCompatActivity {
       }
 
     public void getData(){
-            cl1 = new CustomAdapter(aa, con, statuss);
-            cl2 = new CustomAdapter(aa, con, statuss);
+            cl1 = new CustomAdapter(aa, con, statuss,questatus);
+            cl2 = new CustomAdapter(aa, con, statuss,questatus);
             drawer_Right.setAdapter(cl1);
 
     }

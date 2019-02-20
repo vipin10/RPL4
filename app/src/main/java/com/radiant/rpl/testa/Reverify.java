@@ -15,6 +15,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,10 +30,11 @@ public class Reverify extends AppCompatActivity {
 
     EditText fname_txt,lname_txt,mob_txt,aadharno_txt,bankacc_txt;
     String fname,lname,mob,aadharno,bankacc,yearobirth,monthobirth,dateobirthh,gender,bank1,statee,districtt,educationn,employedd,employerr,sectorr,addline11,addline22,pincode1,nameasinbank1,
-    iffccode1,photouri;
+    iffccode1,photouri,jobrolee,empidd,locationn,aadharpic,language;
     String getFname,getLname,getMob,getAadharno,getBankacc;
     ProgressDialog pd;
     Button btn_Register;
+    AwesomeValidation awesomeValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class Reverify extends AppCompatActivity {
         mob_txt=findViewById(R.id.input_mobile_noo);
         aadharno_txt=findViewById(R.id.input_aadhar_no);
         bankacc_txt=findViewById(R.id.input_bank_acdetails);
-
+        awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
         Intent ii=getIntent();
         fname=ii.getStringExtra("first_namee");
         lname=ii.getStringExtra("last_namee");
@@ -65,6 +68,11 @@ public class Reverify extends AppCompatActivity {
         pincode1=ii.getStringExtra("pincode");
         nameasinbank1=ii.getStringExtra("nameasinbank");
         iffccode1=ii.getStringExtra("ifsccode");
+        jobrolee=ii.getStringExtra("jobrole");
+        empidd=ii.getStringExtra("empid");
+        language=ii.getStringExtra("preflang");
+        locationn=ii.getStringExtra("location");
+        aadharpic=ii.getStringExtra("picaadhar");
         photouri=ii.getStringExtra("pic");
 
         fname_txt.setText(fname);
@@ -72,8 +80,6 @@ public class Reverify extends AppCompatActivity {
         mob_txt.setText(mob);
         aadharno_txt.setText(aadharno);
         bankacc_txt.setText(bankacc);
-
-
 
         btn_Register=findViewById(R.id.btn_Register);
 
@@ -90,6 +96,12 @@ public class Reverify extends AppCompatActivity {
 
             }
         });
+
+        awesomeValidation.addValidation(Reverify.this, R.id.input_fname,"[a-zA-Z\\s]+", R.string.err_msg_for_first_name);
+        awesomeValidation.addValidation(Reverify.this, R.id.input_last_lname,"[a-zA-Z\\s]+", R.string.err_msg_for_last_name);
+        awesomeValidation.addValidation(Reverify.this, R.id.input_mobile_noo,"^[0-9]{10}$", R.string.err_msg_formobile);
+        awesomeValidation.addValidation(Reverify.this, R.id.input_aadhar_no,"^[0-9]{12}$", R.string.err_msg_foraadhar);
+        awesomeValidation.addValidation(Reverify.this, R.id.input_bank_acdetails,"^[0-9]{11,14}$", R.string.err_msg_for_acno);
     }
 
 
@@ -109,15 +121,15 @@ public class Reverify extends AppCompatActivity {
                     System.out.println("sss"+response);
                     String status= jobj.getString("status");
                     if (status.equals("1")){
-                          Intent iii=new Intent(Reverify.this,Registration_Done.class);
+                          Intent iii=new Intent(Reverify.this, Registration_Done.class);
+                          iii.putExtra("sectorid",sectorr);
+                          iii.putExtra("mobileeno",mobbb);
                           startActivity(iii);
-
-
                     }
+
                     else {
-                        Toast.makeText(getApplicationContext(),"Error Saving the details",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Error Saving the details"+response,Toast.LENGTH_LONG).show();
                     }
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -131,11 +143,13 @@ public class Reverify extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 pd.dismiss();
-                Toast.makeText(getApplicationContext(), "error+Error Saving the details", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "error+Error Saving the details"+error, Toast.LENGTH_LONG).show();
+                System.out.println("aa"+error);
             }
         })
 
         {
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
@@ -164,11 +178,19 @@ public class Reverify extends AppCompatActivity {
                 map.put("pincode",pincode1);
                 map.put("aadhar",aadharno);
                 map.put("ssc_id",sectorr);
+                map.put("company_id",employerr);
                 map.put("sector_id","0");
                 map.put("bankname",bank1);
                 map.put("name_in_bank",nameasinbank1);
                 map.put("ifsc",iffccode1);
+                map.put("jobrole_id",jobrolee);
+                map.put("employee_id",empidd);
+                map.put("language",language);
+                map.put("StoreLocation",locationn);
+                if (aadharpic!=null){
+                map.put("aadhar_image",aadharpic);}
                 map.put("student_image",photouri);
+                map.put("data_source","Mobile");
                 System.out.print("ggggggg"+map);
                 return map;
             }

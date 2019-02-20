@@ -186,6 +186,8 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         });
     }
 
+
+
     private void setEvents() {
 
     }
@@ -210,7 +212,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titlea.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    dbAutoSave.insertDataunanswered(dummystuid,hm.get(quename),"1");
                     statusvalue=true;
                 }
                 break;
@@ -223,7 +225,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titleb.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    dbAutoSave.insertDataunanswered(dummystuid,hm.get(quename),"1");
                     statusvalue=true;
                 }
                 break;
@@ -236,7 +238,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename),dummystuid,  titlec.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    dbAutoSave.insertDataunanswered(dummystuid,hm.get(quename),"1");
                     statusvalue=true;
                 }
                 break;
@@ -250,7 +252,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
                 }
                 else {
                     dbAutoSave.insertData(hm.get(quename), dummystuid,  titled.getText().toString());
-                    dbAutoSave.insertDataunanswered(dummystuid,quename,"1");
+                    dbAutoSave.insertDataunanswered(dummystuid,hm.get(quename),"1");
                     statusvalue=true;
                 }
                 break;

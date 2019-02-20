@@ -17,6 +17,7 @@ public class DbAutoSave extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1);
     }
     String selectedop,statuss;
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "create table autosave (ID INTEGER PRIMARY KEY AUTOINCREMENT,STUID TEXT,QUE TEXT,SELECTEDOPTION TEXT)";

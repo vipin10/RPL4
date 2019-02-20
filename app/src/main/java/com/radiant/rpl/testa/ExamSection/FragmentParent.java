@@ -44,7 +44,6 @@ public class FragmentParent extends Fragment {
             Boolean first = true;
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
                 if (!first && positionOffset == 0 && positionOffsetPixels == 0){
                     onPageSelected(0);
                     first = false;

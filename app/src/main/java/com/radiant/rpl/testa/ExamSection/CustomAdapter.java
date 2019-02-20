@@ -22,15 +22,17 @@ public class CustomAdapter extends BaseAdapter{
     String aa;
     ArrayList<String> queidd=new ArrayList<>();
     ArrayList<String> statussss=new ArrayList<>();
+    ArrayList<String> questatuss=new ArrayList<>();
     String img[];
     DbAutoSave dbAutoSave;
 
     private static LayoutInflater inflater = null;
 
-    public CustomAdapter(ArrayList<String> queidd, Context con, ArrayList<String> statussss) {
+    public CustomAdapter(ArrayList<String> queidd, Context con, ArrayList<String> statussss, ArrayList<String> questatuss) {
         this.queidd = queidd;
         this.con = con;
         this.statussss=statussss;
+        this.questatuss=questatuss;
         inflater = (LayoutInflater)con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -54,9 +56,7 @@ public class CustomAdapter extends BaseAdapter{
         final holder  hld = new holder();
         View rowview;
 
-        if(con instanceof Statuss){
-            ((Statuss)con).getStatus();
-        }
+
             rowview = inflater.inflate(R.layout.gdmainfortestquestion, null);
             hld.tv = rowview.findViewById(R.id.txt2);
             hld.tv.setText(queidd.get(position));
@@ -65,7 +65,6 @@ public class CustomAdapter extends BaseAdapter{
             if (statussss.get(position).equals("1")){
                 hld.tv.setTextColor(Color.GREEN);
             }else if (statussss.get(position).equals("2")){
-               // hld.tv.setTextColor(R.color.purple);
                 hld.tv.setTextColor(con.getResources().getColor(R.color.purple));
             }else if (statussss.get(position).equals("0")){
                 hld.tv.setTextColor(Color.BLUE);
@@ -76,6 +75,13 @@ public class CustomAdapter extends BaseAdapter{
             else {
                 hld.tv.setTextColor(Color.BLACK);
             }
+            /*  if (queidd.get(position).equals(questatuss.get(position))){
+                  hld.tv.setTextColor(Color.BLUE);
+              }
+            else
+              {
+                  hld.tv.setTextColor(Color.GREEN);
+              }*/
             return rowview;
     }
 

@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity
-            android:name="com.radiant.rpl.testa.Start_Registration"
+            android:name="com.radiant.rpl.testa.ExamSection.TestQuestion"
 
             android:theme="@style/AppTheme1" />
         <activity android:name="com.radiant.rpl.testa.StudenAtten" />
@@ -36,7 +36,7 @@
 
         <activity android:name="com.radiant.rpl.testa.Registration_Done" />
         <activity
-            android:name="com.radiant.rpl.testa.ExamSection.TestQuestion"
+            android:name="com.radiant.rpl.testa.Start_Registration"
 
             android:theme="@style/AppTheme1">
             <intent-filter>
