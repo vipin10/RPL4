@@ -111,6 +111,8 @@ public class TestQuestion extends AppCompatActivity {
         getIDs();
         t1=findViewById(R.id.toolbar);
         setSupportActionBar(t1);
+        sp=getSharedPreferences("mypref", MODE_PRIVATE);
+        batchvalue=sp.getString("batchid","");
         studentidlist=new ArrayList<>();
         questioniddd=new ArrayList<>();
         answeredoptionn =new ArrayList<>();
@@ -177,9 +179,9 @@ public class TestQuestion extends AppCompatActivity {
 
 //Extract the data…
         if (bundle.containsKey("selectedva"))    {
-        String venName = bundle.getString("selectedva");
-
-        System.out.println("ffff"+venName);
+            value= bundle.getString("selectedva");
+            Questionlist();
+        System.out.println("ffff"+value);
         }
         //Questionlist();
     }
@@ -257,7 +259,7 @@ public class TestQuestion extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("batch_id", batchvalue);
-                map.put("language", "en");
+                map.put("language", value);
                 System.out.println("ddd"+map);
                 return map;
             }
