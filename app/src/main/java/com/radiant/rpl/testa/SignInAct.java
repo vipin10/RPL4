@@ -41,8 +41,6 @@ import static android.view.View.VISIBLE;
 import radiant.rpl.radiantrpl.R;
 
 public class SignInAct extends AppCompatActivity {
-
-
     private ImageView bookIconImageView;
     private TextView bookITextView,skiptextview;
     private ProgressBar loadingProgressBar;
@@ -177,6 +175,12 @@ public class SignInAct extends AppCompatActivity {
                             Intent ii=new Intent(SignInAct.this, Welcome_page.class);
                             startActivity(ii);
                         }
+                    }
+
+                    else if(status.equals("1")){
+                        Toast.makeText(getApplicationContext(),"Wrong Credentials.Register if not registered already.",Toast.LENGTH_LONG).show();
+
+
                     }
                     else {
                         Toast.makeText(getApplicationContext(),"Unable to Login at the moment.Try Again Later.",Toast.LENGTH_LONG).show();
