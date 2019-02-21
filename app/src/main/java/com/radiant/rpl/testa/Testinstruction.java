@@ -2,6 +2,7 @@ package com.radiant.rpl.testa;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,16 +36,22 @@ public class Testinstruction extends AppCompatActivity {
     HashMap<String,String> hm=new HashMap<>();
     CharSequence[] values;
     List<String> listItems = new ArrayList<String>();
-
+    SharedPreferences ssp,sspp;
+String batchidddd;
+    Bundle b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_testinstruction);
         testinstructproceed=findViewById(R.id.testinstructproceed);
+        b=new Bundle();
+        ssp=getSharedPreferences("mypreff",MODE_PRIVATE);
+        sspp=getSharedPreferences("mypref",MODE_PRIVATE);
+        batchidddd=sspp.getString("batchid","");
         testinstructproceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getExamLanguage("148");
+                getExamLanguage(batchidddd);
 
 
             }
@@ -53,35 +60,42 @@ public class Testinstruction extends AppCompatActivity {
 
     public void showDialog(){
         values = listItems.toArray(new CharSequence[listItems.size()]);
-        //values = new CharSequence[]{"English", "Hindi"};
-
         AlertDialog.Builder builder = new AlertDialog.Builder(Testinstruction.this);
         builder.setTitle("Choose Your Language");
         builder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
 
-                switch (i)
-                {
+                switch (i) {
                     case 0:
-                        Toast.makeText(Testinstruction.this,"yeah",Toast.LENGTH_SHORT).show();
-                        Intent ii =new Intent(Testinstruction.this,TestQuestion.class);
-                        startActivity(ii);
+                        String aa = String.valueOf(values[i]);
+                        String bb = hm.get(aa);
+                        SharedPreferences.Editor editor = ssp.edit();
+                        editor.putString("Name", bb);
+                        editor.apply();
+                        editor.commit();
+                            Intent ii = new Intent(Testinstruction.this, TestQuestion.class);
+                            b.putString("selectedva",bb);
+                            ii.putExtras(b);
+                            startActivity(ii);
 
                         break;
                     case 1:
-                        Toast.makeText(Testinstruction.this,"yeah",Toast.LENGTH_SHORT).show();
-
-                        Intent iii =new Intent(Testinstruction.this,TestQuestion.class);
+                        String cc= String.valueOf(values[i]);
+                        String dd=hm.get(cc);
+                        SharedPreferences.Editor editor1 = ssp.edit();
+                        editor1.putString("Name", dd);
+                        editor1.apply();
+                        editor1.commit();
+                        Intent iii = new Intent(Testinstruction.this, TestQuestion.class);
+                        b.putString("selectedva",dd);
+                        iii.putExtras(b);
                         startActivity(iii);
 
                         break;
                 }
 
                 alertDialog.dismiss();
-
-
-
             }
         });
 
