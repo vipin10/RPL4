@@ -2,6 +2,7 @@ package com.radiant.rpl.testa.ExamSection;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -41,7 +42,7 @@ import radiant.rpl.radiantrpl.R;
 
 public class TestQuestion extends AppCompatActivity {
     FragmentParent fragmentParent;
-    TextView textView,finalSubmitbutton,reviewlaterr;
+    TextView textView,finalSubmitbutton;
     Cursor cursor,cursor11;
     Toolbar t1;
     LinearLayout len;
@@ -51,14 +52,12 @@ public class TestQuestion extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
     Context con=this;
     CustomAdapter cl1,cl2;
-    String name[];
-    String j;
+    SharedPreferences sp,sp1;
     ArrayList<String> studentidlist;
     ArrayList<String> questioniddd;
     ArrayList<String> answeredoptionn;
-    ArrayList<String> statusoption;
     ProgressDialog pdd;
-    String aaa,bbb,ccc;
+    String aaa,bbb;
     DbAutoSave dbAutoSave;
     SQLiteDatabase mDatabase;
     ArrayList<SetterGetter> employeeList;
@@ -72,6 +71,7 @@ public class TestQuestion extends AppCompatActivity {
     ArrayList<String> options4=new ArrayList<>();
     ArrayList<String> statuss=new ArrayList<>();
     ArrayList<String> questatus=new ArrayList<>();
+    String value,batchvalue;
 
     SetterGetter setterGetter;
     String[] title = {
@@ -122,7 +122,6 @@ public class TestQuestion extends AppCompatActivity {
         employeeList=new ArrayList<>();
         dbAutoSave = new DbAutoSave(getApplicationContext());
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
-        Questionlist();
         setterGetter =new SetterGetter();
 
 
@@ -160,7 +159,6 @@ public class TestQuestion extends AppCompatActivity {
     private void getIDs() {
         fragmentParent = (FragmentParent) this.getSupportFragmentManager().findFragmentById(R.id.fragmentParent);
         View vv=findViewById(R.id.count_down_strip);
-        //reviewlaterr=vv.findViewById(R.id.mark);
         textView=vv.findViewById(R.id.timer);
         finalSubmitbutton=vv.findViewById(R.id.finish);
         drawer_Right=findViewById(R.id.drawer_right);
@@ -174,8 +172,18 @@ public class TestQuestion extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        showDialog();
+        //showDialog();
+        Bundle bundle = getIntent().getExtras();
+
+//Extract the data…
+        if (bundle.containsKey("selectedva"))    {
+        String venName = bundle.getString("selectedva");
+
+        System.out.println("ffff"+venName);
+        }
+        //Questionlist();
     }
+
 
 
     private void Questionlist() {
@@ -248,8 +256,9 @@ public class TestQuestion extends AppCompatActivity {
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("batch_id", "148");
-                map.put("language","hi");
+                map.put("batch_id", batchvalue);
+                map.put("language", "en");
+                System.out.println("ddd"+map);
                 return map;
             }
         };
@@ -287,9 +296,6 @@ public class TestQuestion extends AppCompatActivity {
                 data.student_id = cursor.getString(1);
                 data.que_id = cursor.getString(2);
                 data.selected_answer = cursor.getString(3);
-
-                /*questioniddd.add(bbb);
-                answeredoptionn.add(ccc);*/
                 dataList.add(data);
 
             } while (cursor.moveToNext());

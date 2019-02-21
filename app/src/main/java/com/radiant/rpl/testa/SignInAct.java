@@ -159,7 +159,6 @@ public class SignInAct extends AppCompatActivity {
                     String status= jobj.getString("status");
                     exam_status=jobj.getString("exam_status");
                     if (status.equals("1")) {
-                        Toast.makeText(getApplicationContext(),"fffffgggg"+status+"   "+exam_status,Toast.LENGTH_LONG).show();
                         JSONObject jsonObject = jobj.getJSONObject("student_details");
                        // Toast.makeText(getApplicationContext(),"hhhhhh"+jsonArray.length(),Toast.LENGTH_LONG).show();
                         for (int i = 0; i < jsonObject.length(); i++) {
@@ -168,7 +167,6 @@ public class SignInAct extends AppCompatActivity {
                             batchid = jsonObject.getString("batch_id");
                             mobile=jsonObject.getString("mobile");
                             address=jsonObject.getString("address1");
-                            Toast.makeText(getApplicationContext(),"fffff"+name+batchid+mobile+address,Toast.LENGTH_LONG).show();
                             sessionManager.setPreferences(getApplicationContext(), "status", "1");
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString("Name", name);
