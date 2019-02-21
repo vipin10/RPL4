@@ -29,7 +29,7 @@ import radiant.rpl.radiantrpl.R;
 public class FragmentChild extends Fragment implements View.OnClickListener {
     String childname,quename,option1,option2,option3,option4;
     String dummystuid="1";
-    TextView textViewChildName,t1,optiona,optionb,optionc,optiond,titlea,titleb,titlec,titled,markforrevieww,reset;
+    TextView textViewChildName,t1,optiona,optionb,optionc,optiond,titlea,titleb,titlec,titled;
     LinearLayout l1,l2,l3,l4;
     DbAutoSave dbAutoSave;
     String idd;
@@ -57,8 +57,6 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
     }
 
     private void getIDs(View view) {
-        markforrevieww=view.findViewById(R.id.mark);
-        reset=view.findViewById(R.id.reset);
         textViewChildName =view.findViewById(R.id.Quesnoo);
         t1=view.findViewById(R.id.que);
         optiona=view.findViewById(R.id.optiona);
@@ -173,17 +171,7 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         else{
             Toast.makeText(getContext(),"gggg",Toast.LENGTH_LONG).show();
         }
-        markforrevieww.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"mmmm"+dbAutoSave.getDataOfSingleClientstatus(hm.get(quename)),Toast.LENGTH_LONG).show();
-             /*   if (dbAutoSave.getDataOfSingleClientstatus(hm.get(quename))!=null){
 
-                }else{
-
-                }*/
-            }
-        });
     }
 
 

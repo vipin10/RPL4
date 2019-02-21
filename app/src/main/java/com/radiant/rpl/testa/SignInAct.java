@@ -29,6 +29,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -155,16 +156,19 @@ public class SignInAct extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    String status= jobj.getString("exam_status");
-                    exam_status=jobj.getString("");
+                    String status= jobj.getString("status");
+                    exam_status=jobj.getString("exam_status");
                     if (status.equals("1")) {
-                        JSONArray jsonArray = jobj.getJSONArray("jobrole");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject c = jsonArray.getJSONObject(i);
-                            name = c.getString("firstname");
-                            batchid = c.getString("batch_id");
-                            mobile=c.getString("mobile");
-                            address=c.getString("address1");
+                        Toast.makeText(getApplicationContext(),"fffffgggg"+status+"   "+exam_status,Toast.LENGTH_LONG).show();
+                        JSONObject jsonObject = jobj.getJSONObject("student_details");
+                       // Toast.makeText(getApplicationContext(),"hhhhhh"+jsonArray.length(),Toast.LENGTH_LONG).show();
+                        for (int i = 0; i < jsonObject.length(); i++) {
+                            //JSONObject c = jsonObject.getJSONObject(i);
+                            name = jsonObject.getString("firstname");
+                            batchid = jsonObject.getString("batch_id");
+                            mobile=jsonObject.getString("mobile");
+                            address=jsonObject.getString("address1");
+                            Toast.makeText(getApplicationContext(),"fffff"+name+batchid+mobile+address,Toast.LENGTH_LONG).show();
                             sessionManager.setPreferences(getApplicationContext(), "status", "1");
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString("Name", name);
