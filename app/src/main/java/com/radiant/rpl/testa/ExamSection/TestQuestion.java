@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +44,7 @@ import radiant.rpl.radiantrpl.R;
 
 public class TestQuestion extends AppCompatActivity {
     FragmentParent fragmentParent;
-    TextView textView,finalSubmitbutton;
+    TextView textView,finalSubmitbutton,reviewlaterr;
     Cursor cursor,cursor11;
     Toolbar t1;
     LinearLayout len;
@@ -52,12 +54,26 @@ public class TestQuestion extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
     Context con=this;
     CustomAdapter cl1,cl2;
-    SharedPreferences sp,sp1;
+    String name[];
+    String j;
+    private NotificationHelper mNotificationHelper;
+
+
+    private static final long START_TIME_IN_MILLIS = 30000;
+    private static final long START_TIME_IN_MILLISR = 00000;
+    private android.os.CountDownTimer CountDownTimer;
+    private boolean TimerRunning;
+    private long TimeLeftInMillis;
+    private long EndTime;
+
+
+
     ArrayList<String> studentidlist;
     ArrayList<String> questioniddd;
     ArrayList<String> answeredoptionn;
+    ArrayList<String> statusoption;
     ProgressDialog pdd;
-    String aaa,bbb;
+    String aaa,bbb,ccc;
     DbAutoSave dbAutoSave;
     SQLiteDatabase mDatabase;
     ArrayList<SetterGetter> employeeList;
@@ -71,7 +87,6 @@ public class TestQuestion extends AppCompatActivity {
     ArrayList<String> options4=new ArrayList<>();
     ArrayList<String> statuss=new ArrayList<>();
     ArrayList<String> questatus=new ArrayList<>();
-    String value,batchvalue;
 
     SetterGetter setterGetter;
     String[] title = {
@@ -122,7 +137,11 @@ public class TestQuestion extends AppCompatActivity {
         employeeList=new ArrayList<>();
         dbAutoSave = new DbAutoSave(getApplicationContext());
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
+        Questionlist();
         setterGetter =new SetterGetter();
+        mNotificationHelper = new NotificationHelper(this);
+
+
 
 
         imgRight.setOnClickListener(new View.OnClickListener() {
@@ -152,13 +171,17 @@ public class TestQuestion extends AppCompatActivity {
             }
         });
 
+
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
     }
+
 
 
     private void getIDs() {
         fragmentParent = (FragmentParent) this.getSupportFragmentManager().findFragmentById(R.id.fragmentParent);
         View vv=findViewById(R.id.count_down_strip);
+        //reviewlaterr=vv.findViewById(R.id.mark);
         textView=vv.findViewById(R.id.timer);
         finalSubmitbutton=vv.findViewById(R.id.finish);
         drawer_Right=findViewById(R.id.drawer_right);
@@ -172,17 +195,141 @@ public class TestQuestion extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //showDialog();
-        Bundle bundle = getIntent().getExtras();
 
-//Extract the data…
-        if (bundle.containsKey("selectedva"))    {
-        String venName = bundle.getString("selectedva");
 
-        System.out.println("ffff"+venName);
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+
+        TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
+        TimerRunning = prefs.getBoolean("timerRunning", false);
+
+        updateCountDownText();
+        updateButtons();
+        resetTimer();
+
+        if (TimerRunning) {
+            EndTime = prefs.getLong("endTime", 0);
+            TimeLeftInMillis = EndTime - System.currentTimeMillis();
+
+            if (TimeLeftInMillis < 0) {
+                TimeLeftInMillis = 0;
+                TimerRunning = false;
+                updateCountDownText();
+                updateButtons();
+            } else {
+                startTimer();
+            }
         }
-        //Questionlist();
+
+        finalSubmitbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+                resetTimer();
+            }
+        });
+
+
+        startTimer();
+
+
+
+
+
     }
+
+
+    private void startTimer() {
+        EndTime = System.currentTimeMillis() + TimeLeftInMillis;
+
+        CountDownTimer = new CountDownTimer(TimeLeftInMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                TimeLeftInMillis = millisUntilFinished;
+                updateCountDownText();
+            }
+
+            @Override
+            public void onFinish() {
+
+                TimerRunning = false;
+                updateButtons();
+                resetTimer();
+                showDialog();
+
+
+            }
+        }.start();
+
+        TimerRunning = true;
+        updateButtons();
+    }
+
+    private void resetTimer() {
+        TimeLeftInMillis = START_TIME_IN_MILLIS;
+        updateCountDownText();
+        updateButtons();
+    }
+
+    private void submitTimer() {
+        TimeLeftInMillis = START_TIME_IN_MILLISR;
+        updateCountDownText();
+        updateButtons();
+        TimerRunning = false;
+        CountDownTimer.cancel();
+    }
+
+
+    private void updateCountDownText() {
+        int minutes = (int) (TimeLeftInMillis / 1000) / 60;
+        int seconds = (int) (TimeLeftInMillis / 1000) % 60;
+
+        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+
+        textView.setText(timeLeftFormatted);
+    }
+
+    private void updateButtons() {
+        if (TimerRunning) {
+        } else {
+
+            if (TimeLeftInMillis < 1000) {
+            } else {
+            }
+
+            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
+
+            } else {
+
+            }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putLong("millisLeft", TimeLeftInMillis);
+        editor.putBoolean("timerRunning", TimerRunning);
+        editor.putLong("endTime", EndTime);
+
+        editor.apply();
+
+        if (CountDownTimer != null) {
+            CountDownTimer.cancel();
+        }
+
+        SendInNotification("Timer is Runing", (TimeLeftInMillis / 1000) / 60, (TimeLeftInMillis / 1000) % 60);
+
+
+    }
+
+
+
+
+
 
 
 
@@ -256,9 +403,8 @@ public class TestQuestion extends AppCompatActivity {
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("batch_id", batchvalue);
-                map.put("language", "en");
-                System.out.println("ddd"+map);
+                map.put("batch_id", "148");
+                map.put("language","hi");
                 return map;
             }
         };
@@ -266,24 +412,6 @@ public class TestQuestion extends AppCompatActivity {
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
-    CountDownTimer tt= new CountDownTimer(300000, 1000) {
-
-        public void onTick(long millisUntilFinished) {
-
-            textView.setText( String.format("%02d:%02d:%02d",
-                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
-                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));  ;
-
-        }
-
-        public void onFinish() {
-            textView.setText("done!");
-        }
-
-    }.start();
 
     public void getalldata(){
         cursor=dbAutoSave.getData("1");
@@ -296,6 +424,9 @@ public class TestQuestion extends AppCompatActivity {
                 data.student_id = cursor.getString(1);
                 data.que_id = cursor.getString(2);
                 data.selected_answer = cursor.getString(3);
+
+                /*questioniddd.add(bbb);
+                answeredoptionn.add(ccc);*/
                 dataList.add(data);
 
             } while (cursor.moveToNext());
@@ -341,6 +472,16 @@ public class TestQuestion extends AppCompatActivity {
             drawer_Right.setAdapter(cl1);
 
     }
+
+
+    public void SendInNotification(String title, long timerNotify, long timerinSec) {
+
+        NotificationCompat.Builder nb = mNotificationHelper.getSendNotification(title, timerNotify, timerinSec);
+        mNotificationHelper.getManger().notify(1, nb.build());
+
+
+    }
+
 
 
 

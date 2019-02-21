@@ -18,12 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
+        <activity android:name="com.radiant.rpl.testa.ExamSection.Testviva"
+            android:theme="@style/AppTheme1"
+            ></activity>
         <activity
-            android:name="com.radiant.rpl.testa.ExamSection.TestQuestion"
-
+            android:name="com.radiant.rpl.testa.Start_Registration"
             android:theme="@style/AppTheme1" />
         <activity android:name="com.radiant.rpl.testa.StudenAtten" />
-        <activity android:name="com.radiant.rpl.testa.Start_Registration" />
+        <activity android:name="com.radiant.rpl.testa.Testinstruction" />
         <activity android:name="com.radiant.rpl.testa.BatchSelection" />
         <activity android:name="com.radiant.rpl.testa.Welcome_page" />
         <activity android:name="com.radiant.rpl.testa.SignInAct" />
@@ -33,11 +35,9 @@
         <activity
             android:name="com.radiant.rpl.testa.MainActivity"
             android:theme="@style/AppTheme1" />
-
         <activity android:name="com.radiant.rpl.testa.Registration_Done" />
         <activity
-            android:name="com.radiant.rpl.testa.Testinstruction"
-
+            android:name="com.radiant.rpl.testa.ExamSection.TestQuestion"
             android:theme="@style/AppTheme1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

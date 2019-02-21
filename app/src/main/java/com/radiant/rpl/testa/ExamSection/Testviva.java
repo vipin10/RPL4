@@ -56,7 +56,7 @@ public class Testviva extends AppCompatActivity {
     String j;
     private NotificationHelper mNotificationHelper;
 
-    private static final long START_TIME_IN_MILLIS = 1500000;
+    private static final long START_TIME_IN_MILLIS = 30000;//1500000
     private static final long  START_TIME_IN_MILLISR=00000;
     private android.os.CountDownTimer CountDownTimer;
     private boolean TimerRunning;
@@ -283,7 +283,7 @@ public class Testviva extends AppCompatActivity {
                 resetTimer();
 
 
-                showDialog1();
+                startTimer();
             }
         }.start();
 

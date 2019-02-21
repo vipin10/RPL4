@@ -41,8 +41,6 @@ import static android.view.View.VISIBLE;
 import radiant.rpl.radiantrpl.R;
 
 public class SignInAct extends AppCompatActivity {
-
-
     private ImageView bookIconImageView;
     private TextView bookITextView,skiptextview;
     private ProgressBar loadingProgressBar;
