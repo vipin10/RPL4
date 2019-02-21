@@ -40,7 +40,7 @@ import java.util.Locale;
 import java.util.Map;
 
 
-public class Testviva extends AppCompatActivity{
+public class Testviva extends AppCompatActivity {
     FragmentParent fragmentParent;
     TextView textView,finalSubmitbutton,reviewlaterr;
     Cursor cursor,cursor11;
@@ -113,13 +113,10 @@ public class Testviva extends AppCompatActivity{
             "Vishwamitra",
     };
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_testviva);
         getIDs();
-
-
         t1=findViewById(R.id.toolbar);
         setSupportActionBar(t1);
         studentidlist=new ArrayList<>();
@@ -144,7 +141,7 @@ public class Testviva extends AppCompatActivity{
             public void onClick(View v) {
                 if(mdrawerLayout.isDrawerOpen(len1)){
                     mdrawerLayout.closeDrawer(len1);
-                   // getData();
+                    //getData();
                     if (statuss.size()>0){
                         statuss.clear();
                         getStatusdata();
@@ -154,7 +151,7 @@ public class Testviva extends AppCompatActivity{
                 }
                 else if (!mdrawerLayout.isDrawerOpen(len1)){
                     mdrawerLayout.openDrawer(len1);
-                  //  getData();
+                    //getData();
                     if (statuss.size()>0){
                         statuss.clear();
                         getStatusdata();
@@ -221,7 +218,7 @@ public class Testviva extends AppCompatActivity{
                         .setPositiveButton("Yes ", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                              Intent ii = new Intent(Testviva.this, Start_Registration.class);
+                                Intent ii = new Intent(Testviva.this, Start_Registration.class);
                                 startActivity(ii);
 
                                 finish();
@@ -491,7 +488,7 @@ public class Testviva extends AppCompatActivity{
 
         }
     }
-
+//
 //    public void getData(){
 //        cl1 = new CustomAdapter(aa, con, statuss);
 //        cl2 = new CustomAdapter(aa, con, statuss);

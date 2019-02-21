@@ -2,7 +2,9 @@ package com.radiant.rpl.testa.ExamSection;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -53,6 +56,18 @@ public class TestQuestion extends AppCompatActivity {
     CustomAdapter cl1,cl2;
     String name[];
     String j;
+    private NotificationHelper mNotificationHelper;
+
+
+    private static final long START_TIME_IN_MILLIS = 1500000;
+    private static final long START_TIME_IN_MILLISR = 00000;
+    private android.os.CountDownTimer CountDownTimer;
+    private boolean TimerRunning;
+    private long TimeLeftInMillis;
+    private long EndTime;
+
+
+
     ArrayList<String> studentidlist;
     ArrayList<String> questioniddd;
     ArrayList<String> answeredoptionn;
@@ -124,6 +139,9 @@ public class TestQuestion extends AppCompatActivity {
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
         Questionlist();
         setterGetter =new SetterGetter();
+        mNotificationHelper = new NotificationHelper(this);
+
+
 
 
         imgRight.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +149,7 @@ public class TestQuestion extends AppCompatActivity {
             public void onClick(View v) {
                 if(mdrawerLayout.isDrawerOpen(len)){
                     mdrawerLayout.closeDrawer(len);
-                    getData();
+                   // getData();
                     if (statuss.size()>0){
                         statuss.clear();
                         getStatusdata();
@@ -146,15 +164,18 @@ public class TestQuestion extends AppCompatActivity {
                         statuss.clear();
                         getStatusdata();
                     }else {
-                        getStatusdata();
+                       // getStatusdata();
                     }
 
                 }
             }
         });
 
+
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
     }
+
 
 
     private void getIDs() {
@@ -174,8 +195,142 @@ public class TestQuestion extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        showDialog();
+
+
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+
+        TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
+        TimerRunning = prefs.getBoolean("timerRunning", false);
+
+        updateCountDownText();
+        updateButtons();
+        resetTimer();
+
+        if (TimerRunning) {
+            EndTime = prefs.getLong("endTime", 0);
+            TimeLeftInMillis = EndTime - System.currentTimeMillis();
+
+            if (TimeLeftInMillis < 0) {
+                TimeLeftInMillis = 0;
+                TimerRunning = false;
+                updateCountDownText();
+                updateButtons();
+            } else {
+                startTimer();
+            }
+        }
+
+        finalSubmitbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+                resetTimer();
+            }
+        });
+
+
+        startTimer();
+
+
+
+
+
     }
+
+
+    private void startTimer() {
+        EndTime = System.currentTimeMillis() + TimeLeftInMillis;
+
+        CountDownTimer = new CountDownTimer(TimeLeftInMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                TimeLeftInMillis = millisUntilFinished;
+                updateCountDownText();
+            }
+
+            @Override
+            public void onFinish() {
+
+                TimerRunning = false;
+                updateButtons();
+                resetTimer();
+                showDialog();
+
+
+            }
+        }.start();
+
+        TimerRunning = true;
+        updateButtons();
+    }
+
+    private void resetTimer() {
+        TimeLeftInMillis = START_TIME_IN_MILLIS;
+        updateCountDownText();
+        updateButtons();
+    }
+
+    private void submitTimer() {
+        TimeLeftInMillis = START_TIME_IN_MILLISR;
+        updateCountDownText();
+        updateButtons();
+        TimerRunning = false;
+        CountDownTimer.cancel();
+    }
+
+
+    private void updateCountDownText() {
+        int minutes = (int) (TimeLeftInMillis / 1000) / 60;
+        int seconds = (int) (TimeLeftInMillis / 1000) % 60;
+
+        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+
+        textView.setText(timeLeftFormatted);
+    }
+
+    private void updateButtons() {
+        if (TimerRunning) {
+        } else {
+
+            if (TimeLeftInMillis < 1000) {
+            } else {
+            }
+
+            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
+
+            } else {
+
+            }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putLong("millisLeft", TimeLeftInMillis);
+        editor.putBoolean("timerRunning", TimerRunning);
+        editor.putLong("endTime", EndTime);
+
+        editor.apply();
+
+        if (CountDownTimer != null) {
+            CountDownTimer.cancel();
+        }
+
+        SendInNotification("Timer is Runing", (TimeLeftInMillis / 1000) / 60, (TimeLeftInMillis / 1000) % 60);
+
+
+    }
+
+
+
+
+
+
 
 
     private void Questionlist() {
@@ -257,24 +412,6 @@ public class TestQuestion extends AppCompatActivity {
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
-    CountDownTimer tt= new CountDownTimer(300000, 1000) {
-
-        public void onTick(long millisUntilFinished) {
-
-            textView.setText( String.format("%02d:%02d:%02d",
-                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
-                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));  ;
-
-        }
-
-        public void onFinish() {
-            textView.setText("done!");
-        }
-
-    }.start();
 
     public void getalldata(){
         cursor=dbAutoSave.getData("1");
@@ -337,6 +474,16 @@ public class TestQuestion extends AppCompatActivity {
     }
 
 
+    public void SendInNotification(String title, long timerNotify, long timerinSec) {
+
+        NotificationCompat.Builder nb = mNotificationHelper.getSendNotification(title, timerNotify, timerinSec);
+        mNotificationHelper.getManger().notify(1, nb.build());
+
+
+    }
+
+
+
 
     public void showDialog() {
 
@@ -347,7 +494,7 @@ public class TestQuestion extends AppCompatActivity {
                 .setPositiveButton("Yes And proceed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent ii = new Intent(TestQuestion.this, Testviva.class);
+                        Intent ii = new Intent(TestQuestion.this,Testviva.class);
                         startActivity(ii);
 
                         finish();
