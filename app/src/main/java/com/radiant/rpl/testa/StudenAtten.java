@@ -1,6 +1,7 @@
 package com.radiant.rpl.testa;
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,18 +27,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.radiant.rpl.testa.BatchSelection;
+import com.radiant.rpl.testa.ExamSection.TestQuestion;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
 public class StudenAtten extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -63,7 +77,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     SharedPreferences sharedPreferences;
     TextView nameid,addressid;
 
-
+    private android.app.AlertDialog progressDialog;
 
 
     @Override
@@ -71,7 +85,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_studen_atten);
 
-
+        progressDialog = new SpotsDialog(StudenAtten.this, R.style.Custom);
         img = findViewById(R.id.assessorpic);
         tv = findViewById(R.id.locationn);
         b1 = findViewById(R.id.attendencesubmit);
@@ -106,13 +120,11 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //  if (encoded!=null) {
-                Intent ii = new Intent(StudenAtten.this, Testinstruction.class);
-                startActivity(ii);
-               /* }else {
+                if (encoded!=null) {
+                      AssessorAttendance();
+                }else {
                     Toast.makeText(getApplicationContext(),"You can't Continue without Uploading your Photo",Toast.LENGTH_LONG).show();
-                }*/
+                }
             }
         });
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -133,6 +145,8 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 addConnectionCallbacks(this).
                 addOnConnectionFailedListener(this).build();
     }
+
+
 
     private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {
         ArrayList<String> result = new ArrayList<>();
@@ -269,7 +283,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         if (location != null) {
             //locationTv.setText("Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude());
             // Toast.makeText(this,"Latitude : "+aaa,Toast.LENGTH_LONG).show();
-            Toast.makeText(this,"Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude(),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -341,6 +355,70 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 .addApi(LocationServices.API)
                 .build();
 
+    }
+
+    private void AssessorAttendance() {
+        progressDialog.show();
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_student_attendance.php";
+
+
+        StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jobj = new JSONObject(response);
+                   // Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
+                    String status= jobj.getString("status");
+                    String message= jobj.getString("msg");
+
+                    if (encoded!=null) {
+                        Intent ii = new Intent(StudenAtten.this, Testinstruction.class);
+                        startActivity(ii);
+                    }else {
+                        Toast.makeText(getApplicationContext(),"You can't Continue without Uploading your Photo",Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                super.getHeaders();
+                Map<String, String> map = new HashMap<>();
+
+                return map;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                super.getParams();
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/x-www-form-urlencoded");
+                map.put("student_id", "9015363586");
+                map.put("student_image",encoded);
+                map.put("location",tv.getText().toString());
+                map.put("attendance","PRESENT");
+                map.put("batch_id","184");
+                return map;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(20000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -1,5 +1,6 @@
 package com.radiant.rpl.testa;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
 public class Testinstruction extends AppCompatActivity {
@@ -39,6 +42,8 @@ public class Testinstruction extends AppCompatActivity {
     SharedPreferences ssp,sspp;
 String batchidddd;
     Bundle b;
+    SharedPreferences.Editor editor;
+    private android.app.AlertDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,7 @@ String batchidddd;
         b=new Bundle();
         ssp=getSharedPreferences("mypreff",MODE_PRIVATE);
         sspp=getSharedPreferences("mypref",MODE_PRIVATE);
+        progressDialog = new SpotsDialog(Testinstruction.this, R.style.Custom);
         batchidddd=sspp.getString("batchid","");
         testinstructproceed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,12 +77,12 @@ String batchidddd;
                         String aa = String.valueOf(values[i]);
                         String bb = hm.get(aa);
                         SharedPreferences.Editor editor = ssp.edit();
-                        editor.putString("Name", bb);
+                        editor.putString("languagev", bb);
                         editor.apply();
                         editor.commit();
                             Intent ii = new Intent(Testinstruction.this, TestQuestion.class);
-                            b.putString("selectedva",bb);
-                            ii.putExtras(b);
+                           /* b.putString("selectedva",bb);
+                            ii.putExtras(b);*/
                             startActivity(ii);
 
                         break;
@@ -84,12 +90,12 @@ String batchidddd;
                         String cc= String.valueOf(values[i]);
                         String dd=hm.get(cc);
                         SharedPreferences.Editor editor1 = ssp.edit();
-                        editor1.putString("Name", dd);
+                        editor1.putString("languagev", dd);
                         editor1.apply();
                         editor1.commit();
                         Intent iii = new Intent(Testinstruction.this, TestQuestion.class);
-                        b.putString("selectedva",dd);
-                        iii.putExtras(b);
+                      /*  b.putString("selectedva",dd);
+                        iii.putExtras(b);*/
                         startActivity(iii);
 
                         break;
@@ -112,6 +118,7 @@ String batchidddd;
     //Exam Languages
 
     private void getExamLanguage(final String Sectorvalue) {
+        progressDialog.show();
         String serverURL = "https://www.skillassessment.org/sdms/android_connect/get_batch_language.php";
 
 
@@ -142,13 +149,17 @@ String batchidddd;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
                 Toast.makeText(getApplicationContext(), "Failed to fetch Languages List", Toast.LENGTH_LONG).show();
             }
         })

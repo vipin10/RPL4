@@ -63,7 +63,6 @@ public class Welcome_page extends AppCompatActivity {
         logoutt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                session.setPreferences(Welcome_page.this, "status", "0");
                 Intent in = new Intent(Welcome_page.this, SignInAct.class);
                 startActivity(in);
             }

@@ -15,6 +15,10 @@
     <string name="forget_password">Forget Password.?</string>
     <string name="Logout"><u>LOGOUT</u></string>
 
+    <string name="error_cannot_open">Unable to open</string>
+    <string name="error_cannot_write">Unable to access Storage</string>
+    <string name="error_cannot_get_permission">Permission not granted</string>
+    <string name="error_not_having_camera">Cant find Camera</string>
 
     <!-- hint name of field -->
     <string name="line1">1. Total duration of examination is 50 Minutes i.e 25 Minutes for theory exam and

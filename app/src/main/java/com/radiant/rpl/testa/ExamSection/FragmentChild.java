@@ -28,7 +28,7 @@ import radiant.rpl.radiantrpl.R;
  */
 public class FragmentChild extends Fragment implements View.OnClickListener {
     String childname,quename,option1,option2,option3,option4;
-    String dummystuid="1";
+    String dummystuid="aman";
     TextView textViewChildName,t1,optiona,optionb,optionc,optiond,titlea,titleb,titlec,titled;
     LinearLayout l1,l2,l3,l4;
     DbAutoSave dbAutoSave;
@@ -166,10 +166,8 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         });
 
         if (statusvalue){
-            Toast.makeText(getContext(),"ffff",Toast.LENGTH_LONG).show();
         }
         else{
-            Toast.makeText(getContext(),"gggg",Toast.LENGTH_LONG).show();
         }
 
     }

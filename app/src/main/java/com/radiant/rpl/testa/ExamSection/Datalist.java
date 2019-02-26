@@ -8,6 +8,9 @@ class Datalist
     // class has defined the type of data ArrayList
     // size of input 4
     ArrayList<SetterGetter> dataList = new ArrayList<SetterGetter>();
+    String batch_id=new String();
+   /* long theory_time;
+    long practical_time;*/
    /* int n=4;
 
     // the custom datatype class

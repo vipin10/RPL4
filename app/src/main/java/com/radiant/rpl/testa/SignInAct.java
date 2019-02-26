@@ -38,6 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+
+import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
 public class SignInAct extends AppCompatActivity {
@@ -52,7 +54,8 @@ public class SignInAct extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     final String mypreference = "mypref";
      String name,batchid,mobile,exam_status,address;
-
+    private android.app.AlertDialog progressDialog;
+    String status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,7 @@ public class SignInAct extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_in);
 
+        progressDialog = new SpotsDialog(SignInAct.this, R.style.Custom);
         sessionManager = new SessionManager();
         sharedpreferences=getSharedPreferences(mypreference,Context.MODE_PRIVATE);
         initViews();
@@ -144,7 +148,7 @@ public class SignInAct extends AppCompatActivity {
 
     private void sendDataServer() {
 
-
+        progressDialog.show();
         String serverURL = "https://www.skillassessment.org/sdms/android_connect/login.php";
         uname=username.getText().toString();
         pass= passowrd.getText().toString();
@@ -154,13 +158,13 @@ public class SignInAct extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    String status= jobj.getString("status");
+                    status= jobj.getString("status");
                     exam_status=jobj.getString("exam_status");
+
                     if (status.equals("1")) {
+                    if (exam_status.equals("Not Attempted")){
                         JSONObject jsonObject = jobj.getJSONObject("student_details");
-                       // Toast.makeText(getApplicationContext(),"hhhhhh"+jsonArray.length(),Toast.LENGTH_LONG).show();
                         for (int i = 0; i < jsonObject.length(); i++) {
-                            //JSONObject c = jsonObject.getJSONObject(i);
                             name = jsonObject.getString("firstname");
                             batchid = jsonObject.getString("batch_id");
                             mobile=jsonObject.getString("mobile");
@@ -176,26 +180,36 @@ public class SignInAct extends AppCompatActivity {
                             startActivity(ii);
                         }
                     }
+                    else{
+                        Toast.makeText(getApplicationContext(),"You have already attempted the exam.",Toast.LENGTH_LONG).show();
+                    }
 
-                    else if(status.equals("1")){
-                        Toast.makeText(getApplicationContext(),"Wrong Credentials.Register if not registered already.",Toast.LENGTH_LONG).show();
+                    }
 
-
+                    else if (status.equals("0")){
+                        Toast.makeText(getApplicationContext(),"Wrong Credentials.",Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Unable to Login at the moment.Try Again Later.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Unable to Login",Toast.LENGTH_LONG).show();
                     }
+                }
 
-
-                } catch (JSONException e) {
+                catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
+                }
+
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
                 Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
             }
         }) {
@@ -203,8 +217,6 @@ public class SignInAct extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
                 Map<String, String> map = new HashMap<>();
-               /* map.put("hitechApiKey", "hitechApiX@123#");
-                map.put("Authorization", "Basic YW5kcm9pZDpoaXRlY2hBcGlYQDEyMyM=");*/
                 return map;
             }
 

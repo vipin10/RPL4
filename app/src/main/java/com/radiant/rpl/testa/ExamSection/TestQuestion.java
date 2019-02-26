@@ -1,9 +1,16 @@
 package com.radiant.rpl.testa.ExamSection;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +21,7 @@ import android.database.Cursor;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -26,23 +34,37 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.androidhiddencamera.CameraConfig;
+import com.androidhiddencamera.CameraError;
+import com.androidhiddencamera.HiddenCameraActivity;
+import com.androidhiddencamera.HiddenCameraUtils;
+import com.androidhiddencamera.config.CameraFacing;
+import com.androidhiddencamera.config.CameraImageFormat;
+import com.androidhiddencamera.config.CameraResolution;
+import com.androidhiddencamera.config.CameraRotation;
 import com.google.gson.Gson;
 import com.radiant.rpl.testa.LocalDB.DbAutoSave;
 import com.radiant.rpl.testa.MyNetwork;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
-
+import dmax.dialog.SpotsDialog;
 import radiant.rpl.radiantrpl.R;
 
-public class TestQuestion extends AppCompatActivity {
+public class TestQuestion extends HiddenCameraActivity {
     FragmentParent fragmentParent;
-    TextView textView,finalSubmitbutton;
+    TextView textView,finalSubmitbutton,reviewlaterr;
     Cursor cursor,cursor11;
     Toolbar t1;
     LinearLayout len;
@@ -52,12 +74,29 @@ public class TestQuestion extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
     Context con=this;
     CustomAdapter cl1,cl2;
-    SharedPreferences sp,sp1;
+    String  encodedd;
+    String name[];
+    String j;
+    private NotificationHelper mNotificationHelper;
+    private android.app.AlertDialog progressDialog;
+
+    private static final long START_TIME_IN_MILLIS = 30000*20;
+    private static final long START_TIME_IN_MILLISR = 00000;
+    private android.os.CountDownTimer CountDownTimer;
+    private boolean TimerRunning;
+    private long TimeLeftInMillis;
+    private long EndTime;
+    private CameraConfig mCameraConfig;
+
+
     ArrayList<String> studentidlist;
     ArrayList<String> questioniddd;
     ArrayList<String> answeredoptionn;
+    private static final int REQ_CODE_CAMERA_PERMISSION = 1253;
+    ArrayList<String> statusoption;
+    SharedPreferences sp,sp1;
     ProgressDialog pdd;
-    String aaa,bbb;
+    String aaa,bbb,ccc;
     DbAutoSave dbAutoSave;
     SQLiteDatabase mDatabase;
     ArrayList<SetterGetter> employeeList;
@@ -111,8 +150,11 @@ public class TestQuestion extends AppCompatActivity {
         getIDs();
         t1=findViewById(R.id.toolbar);
         setSupportActionBar(t1);
+        progressDialog = new SpotsDialog(TestQuestion.this, R.style.Custom);
         sp=getSharedPreferences("mypref", MODE_PRIVATE);
+        sp1=getSharedPreferences("mypreff", MODE_PRIVATE);
         batchvalue=sp.getString("batchid","");
+        value=sp1.getString("languagev","");
         studentidlist=new ArrayList<>();
         questioniddd=new ArrayList<>();
         answeredoptionn =new ArrayList<>();
@@ -124,7 +166,11 @@ public class TestQuestion extends AppCompatActivity {
         employeeList=new ArrayList<>();
         dbAutoSave = new DbAutoSave(getApplicationContext());
         mDatabase= openOrCreateDatabase(DbAutoSave.DATABASE_NAME, MODE_PRIVATE, null);
+        //Questionlist();
         setterGetter =new SetterGetter();
+        mNotificationHelper = new NotificationHelper(this);
+
+
 
 
         imgRight.setOnClickListener(new View.OnClickListener() {
@@ -154,13 +200,53 @@ public class TestQuestion extends AppCompatActivity {
             }
         });
 
+        mCameraConfig = new CameraConfig()
+                .getBuilder(this)
+                .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
+                .setCameraResolution(CameraResolution.HIGH_RESOLUTION)
+                .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                .setImageRotation(CameraRotation.ROTATION_270)
+                .build();
+
+
+        //Check for the camera permission for the runtime
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            //Start camera preview
+            startCamera(mCameraConfig);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    REQ_CODE_CAMERA_PERMISSION);
+        }
+
+        Timer t = new Timer();
+//Set the schedule function and rate
+        t.scheduleAtFixedRate(new TimerTask() {
+
+                                  @Override
+                                  public void run() {
+                                      takePicture();
+                                      //Called each time when 1000 milliseconds (1 second) (the period parameter)
+                                  }
+
+                              },
+//Set how long before to start calling the TimerTask (in milliseconds)
+                0,
+//Set the amount of time between each execution (in milliseconds)
+                30000*2);
+
+
         mdrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
     }
+
 
 
     private void getIDs() {
         fragmentParent = (FragmentParent) this.getSupportFragmentManager().findFragmentById(R.id.fragmentParent);
         View vv=findViewById(R.id.count_down_strip);
+        //reviewlaterr=vv.findViewById(R.id.mark);
         textView=vv.findViewById(R.id.timer);
         finalSubmitbutton=vv.findViewById(R.id.finish);
         drawer_Right=findViewById(R.id.drawer_right);
@@ -174,34 +260,171 @@ public class TestQuestion extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //showDialog();
-        Bundle bundle = getIntent().getExtras();
 
-//Extract the data…
-        if (bundle.containsKey("selectedva"))    {
-            value= bundle.getString("selectedva");
-            Questionlist();
-        System.out.println("ffff"+value);
+
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+
+        TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
+        TimerRunning = prefs.getBoolean("timerRunning", false);
+
+        updateCountDownText();
+        updateButtons();
+        resetTimer();
+
+        if (TimerRunning) {
+            EndTime = prefs.getLong("endTime", 0);
+            TimeLeftInMillis = EndTime - System.currentTimeMillis();
+
+            if (TimeLeftInMillis < 0) {
+                TimeLeftInMillis = 0;
+                TimerRunning = false;
+                updateCountDownText();
+                updateButtons();
+            } else {
+                startTimer();
+            }
         }
-        //Questionlist();
+
+        finalSubmitbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+                resetTimer();
+            }
+        });
+
+
+        startTimer();
+            Questionlist();
+            System.out.println("ffff"+value);
+
+
+
+
+
+    }
+
+
+    private void startTimer() {
+        EndTime = System.currentTimeMillis() + TimeLeftInMillis;
+
+        CountDownTimer = new CountDownTimer(TimeLeftInMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                TimeLeftInMillis = millisUntilFinished;
+                updateCountDownText();
+            }
+
+            @Override
+            public void onFinish() {
+
+                TimerRunning = false;
+                updateButtons();
+                resetTimer();
+                showDialog();
+
+
+            }
+        }.start();
+
+        TimerRunning = true;
+        updateButtons();
+    }
+
+    private void resetTimer() {
+        TimeLeftInMillis = START_TIME_IN_MILLIS;
+        updateCountDownText();
+        updateButtons();
+    }
+
+    private void submitTimer() {
+        TimeLeftInMillis = START_TIME_IN_MILLISR;
+        updateCountDownText();
+        updateButtons();
+        TimerRunning = false;
+        CountDownTimer.cancel();
+    }
+
+
+    private void updateCountDownText() {
+        int minutes = (int) (TimeLeftInMillis / 1000) / 60;
+        int seconds = (int) (TimeLeftInMillis / 1000) % 60;
+
+        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+
+        textView.setText(timeLeftFormatted);
+    }
+
+    private void updateButtons() {
+        if (TimerRunning) {
+        } else {
+
+            if (TimeLeftInMillis < 1000) {
+            } else {
+            }
+
+            if (TimeLeftInMillis < START_TIME_IN_MILLIS) {
+
+            } else {
+
+            }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putLong("millisLeft", TimeLeftInMillis);
+        editor.putBoolean("timerRunning", TimerRunning);
+        editor.putLong("endTime", EndTime);
+
+        editor.apply();
+
+        if (CountDownTimer != null) {
+            CountDownTimer.cancel();
+        }
+
+        SendInNotification("Timer is Runing", (TimeLeftInMillis / 1000) / 60, (TimeLeftInMillis / 1000) % 60);
+
+
     }
 
 
 
-    private void Questionlist() {
-        pdd = new ProgressDialog(TestQuestion.this);
-        pdd.setMessage("Loading...");
-        pdd.show();
-        String serverURL = "https://www.skillassessment.org/sdms/android_connect/batch_questions.php";
+    public void SendInNotification(String title, long timerNotify, long timerinSec) {
 
+        NotificationCompat.Builder nb = mNotificationHelper.getSendNotification(title, timerNotify, timerinSec);
+        mNotificationHelper.getManger().notify(1, nb.build());
+
+
+    }
+
+
+    String FormatSeconds(float elapsed)
+    {
+        int d = (int)(elapsed * 100.0f);
+        int minutes = d / (60 * 100);
+        int seconds = (d % (60 * 100)) / 100;
+        int hundredths = d % 100;
+        return String.format("{0:00}:{1:00}.{2:00}", minutes, seconds, hundredths);
+    }
+
+    private void Questionlist() {
+        progressDialog.show();
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/batch_questions.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jobj = new JSONObject(response);
-                    //Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
                     String status= jobj.getString("status");
+                    float aab=jobj.getLong("theory_time");
+                    System.out.println("dddd"+FormatSeconds(aab));
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("theory_questions");
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -232,15 +455,15 @@ public class TestQuestion extends AppCompatActivity {
                 }
 
 
-                if (pdd.isShowing()) {
-                    pdd.dismiss();
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (pdd.isShowing()) {
-                    pdd.dismiss();
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
                 }
                 Toast.makeText(getApplicationContext(), "Error: Please try again Later", Toast.LENGTH_LONG).show();
             }
@@ -268,24 +491,6 @@ public class TestQuestion extends AppCompatActivity {
         MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
-    CountDownTimer tt= new CountDownTimer(300000, 1000) {
-
-        public void onTick(long millisUntilFinished) {
-
-            textView.setText( String.format("%02d:%02d:%02d",
-                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
-                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));  ;
-
-        }
-
-        public void onFinish() {
-            textView.setText("done!");
-        }
-
-    }.start();
 
     public void getalldata(){
         cursor=dbAutoSave.getData("1");
@@ -313,12 +518,12 @@ public class TestQuestion extends AppCompatActivity {
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
     }
 
       public void getStatusdata(){
-        cursor11=dbAutoSave.getData1("1");
+        cursor11=dbAutoSave.getData1("aman");
           if (cursor11 != null) {
               cursor11.moveToFirst();
 
@@ -341,6 +546,15 @@ public class TestQuestion extends AppCompatActivity {
             cl1 = new CustomAdapter(aa, con, statuss,questatus);
             cl2 = new CustomAdapter(aa, con, statuss,questatus);
             drawer_Right.setAdapter(cl1);
+    }
+
+    private class MyThread extends Thread {
+
+
+        @Override
+        public void run() {
+            saveproctoring();
+        }
 
     }
 
@@ -356,18 +570,114 @@ public class TestQuestion extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent ii = new Intent(TestQuestion.this, Testviva.class);
+                        Bundle b=new Bundle();
+                        b.putString("selectedva",value);
+                        ii.putExtras(b);
                         startActivity(ii);
 
                         finish();
 
                     }
                 }).create();
-
-
         alertDialog.show();
 
     }
 
+    private void saveproctoring() {
+        String serverURL = "https://www.skillassessment.org/sdms/android_connect/save_proctoring.php";
 
 
+        StringRequest request = new StringRequest(Request.Method.POST, serverURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jobj = new JSONObject(response);
+                    Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
+                    System.out.println("detail"+response);
+
+                    String status= jobj.getString("status");
+                    if (status.equals("1")){
+                        System.out.println("The proctored image is saved");
+                    }
+                    else {
+                        System.out.println("err");
+                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("volleyerr"+error);
+                Toast.makeText(getApplicationContext(), "Error: Please try again Later"+error, Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                super.getHeaders();
+                Map<String, String> map = new HashMap<>();
+
+                return map;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                super.getParams();
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/x-www-form-urlencoded");
+                map.put("student_image", encodedd);
+                map.put("student_id","9015363586");
+                System.out.println("hhh"+map);
+                return map;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MyNetwork.getInstance(getApplicationContext()).addToRequestQueue(request);
+    }
+
+
+    @Override
+    public void onImageCapture(@NonNull File imageFile) {
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = ImageUtils.getInstant().getCompressedBitmap(imageFile.getAbsolutePath());
+        //Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        encodedd = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        System.out.println("ddddd"+encodedd);
+        if (encodedd!=null){
+            new MyThread().start();
+        }
+        URI imguri=imageFile.toURI();
+        Toast.makeText(getApplicationContext(),"photo base 64 is"+imguri.toString(),Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
+        switch (errorCode) {
+            case CameraError.ERROR_CAMERA_OPEN_FAILED:
+                Toast.makeText(this, R.string.error_cannot_open, Toast.LENGTH_LONG).show();
+                break;
+            case CameraError.ERROR_IMAGE_WRITE_FAILED:
+                Toast.makeText(this, R.string.error_cannot_write, Toast.LENGTH_LONG).show();
+                break;
+            case CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE:
+                Toast.makeText(this, R.string.error_cannot_get_permission, Toast.LENGTH_LONG).show();
+                break;
+            case CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION:
+                HiddenCameraUtils.openDrawOverPermissionSetting(this);
+                break;
+            case CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA:
+                Toast.makeText(this, R.string.error_not_having_camera, Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
 }
