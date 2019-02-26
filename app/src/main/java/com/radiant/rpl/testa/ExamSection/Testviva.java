@@ -112,7 +112,7 @@ public class Testviva extends HiddenCameraActivity {
     ArrayList<String> statuss=new ArrayList<>();
     ArrayList<String> questatus=new ArrayList<>();
     SetterGetter setterGetter;
-    String value,batchvalue;
+    String value,batchvalue,studentid;
     String jsonInString;
 SharedPreferences sp;
     String[] title = {
@@ -156,6 +156,7 @@ SharedPreferences sp;
 
         sp=getSharedPreferences("mypref", MODE_PRIVATE);
         batchvalue=sp.getString("batchid","");
+        studentid=sp.getString("userid","");
         progressDialog = new SpotsDialog(Testviva.this, R.style.Custom);
         studentidlist=new ArrayList<>();
         questioniddd=new ArrayList<>();
@@ -565,7 +566,7 @@ SharedPreferences sp;
     }
 
     public void getStatusdata(){
-        cursor11=dbAutoSave.getData1("1");
+        cursor11=dbAutoSave.getData1(studentid);
         if (cursor11 != null) {
             cursor11.moveToFirst();
 
@@ -709,7 +710,7 @@ SharedPreferences sp;
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("student_image", encodedd1);
-                map.put("student_id","9015363586");
+                map.put("student_id",studentid);
                 System.out.println("hhh"+map);
                 return map;
             }

@@ -49,7 +49,7 @@ import radiant.rpl.radiantrpl.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,input_layout_prefferedlanguage;
+    Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,input_layout_prefferedlanguage,category;
     EditText input_name,input_last_name,input_mobile_no,input_address1
             ,input_address2,input_pincode,input_aadhar,input_bank_ac,input_ifsc_code,input_bank_username,input_empid,input_loc;
 ProgressDialog pd;
@@ -74,7 +74,7 @@ ProgressDialog pd;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     String yearobirth,monthobirth,dateobirth;
     AwesomeValidation awesomeValidation;
-    String gender,eduction1,employment1,employer1,sector1,bankname1,state1,district1,encodedphoto,encodedphotoaadhar,jobrole1,preflang1;
+    String gender,eduction1,employment1,employer1,sector1,bankname1,state1,district1,encodedphoto,encodedphotoaadhar,jobrole1,preflang1,categoryy;
     String bankiddd,stateiddd,districtiddd,employeridd,employeridname,sectoridd,jobroleeiddd,preflangiddd;
     NetworkStateReceiver networkStateReceiver;
     SwipeRefreshLayout mySwipeRefreshLayout;
@@ -87,6 +87,7 @@ ProgressDialog pd;
 
         final Spinner myspinner = findViewById(R.id.input_layout_gender);
         yearofbirth=findViewById(R.id.input_layout_year);
+        category=findViewById(R.id.input_layout_category);
         monthofbirth=findViewById(R.id.input_layout_month);
         dateofbirth=findViewById(R.id.input_layout_date);
         education=findViewById(R.id.input_layout_Education);
@@ -528,6 +529,35 @@ ProgressDialog pd;
 
 
         });
+
+        //Choose category
+        ArrayAdapter<String> categoryadapt = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_list_item_1,jobrolelist);
+        categoryadapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        category.setAdapter(jobroleadapter);
+
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id)
+            {
+                if(position > 0) {
+                    categoryy = category.getSelectedItem().toString();
+                    //jobroleeiddd=Jobrolelist.get(jobrole1);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+
+            }
+
+
+        });
+
 
         //Preffered Exam Language
         ArrayAdapter<String> preflanguage = new ArrayAdapter<String>(MainActivity.this,

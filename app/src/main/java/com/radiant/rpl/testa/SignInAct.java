@@ -4,6 +4,7 @@ package com.radiant.rpl.testa;
 import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
@@ -30,6 +32,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.JsonObject;
+import com.radiant.rpl.testa.ExamSection.TestQuestion;
+import com.radiant.rpl.testa.ExamSection.Testviva;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +57,7 @@ public class SignInAct extends AppCompatActivity {
     SessionManager sessionManager;
     SharedPreferences sharedpreferences;
     final String mypreference = "mypref";
-     String name,batchid,mobile,exam_status,address;
+     String name,rascibatchid,mobile,exam_status,address,userid,batchid;
     private android.app.AlertDialog progressDialog;
     String status;
     @Override
@@ -89,8 +93,7 @@ public class SignInAct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (username.getText().toString().equals(null)){
-
+                if (username.getText().toString().equals("")|passowrd.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(),"The required fields Username and password can't be empty",Toast.LENGTH_LONG).show();
                 }else {
                     sendDataServer();
@@ -165,23 +168,35 @@ public class SignInAct extends AppCompatActivity {
                     if (exam_status.equals("Not Attempted")){
                         JSONObject jsonObject = jobj.getJSONObject("student_details");
                         for (int i = 0; i < jsonObject.length(); i++) {
-                            name = jsonObject.getString("firstname");
+                            name = jsonObject.getString("name");
                             batchid = jsonObject.getString("batch_id");
                             mobile=jsonObject.getString("mobile");
-                            address=jsonObject.getString("address1");
+                            address=jsonObject.getString("address");
+                            userid=jsonObject.getString("user_name");
+                            rascibatchid=jsonObject.getString("batchid");
                             sessionManager.setPreferences(getApplicationContext(), "status", "1");
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString("Name", name);
                             editor.putString("address", address);
                             editor.putString("batchid", batchid);
                             editor.putString("assessorid",mobile);
+                            editor.putString("userid",userid);
                             editor.apply();
                             Intent ii=new Intent(SignInAct.this, Welcome_page.class);
                             startActivity(ii);
                         }
                     }
                     else{
-                        Toast.makeText(getApplicationContext(),"You have already attempted the exam.",Toast.LENGTH_LONG).show();
+                        AlertDialog alertDialog = new AlertDialog.Builder(SignInAct.this)
+                                .setMessage("You have already attempted the exam.")
+                                .setCancelable(false)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).create();
+                        alertDialog.show();
                     }
 
                     }
@@ -242,8 +257,5 @@ public class SignInAct extends AppCompatActivity {
         super.onBackPressed();
         finishAffinity();
     }
-
-
-
 
 }

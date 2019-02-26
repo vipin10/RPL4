@@ -72,7 +72,7 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissions = new ArrayList<>();
     private static final int ALL_PERMISSIONS_RESULT = 1011;
-    String aaa;
+    String aaa,batchidd,studentidd;
     String encoded;
     SharedPreferences sharedPreferences;
     TextView nameid,addressid;
@@ -98,6 +98,12 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         }
         if (sharedPreferences.contains("address")){
             addressid.setText(sharedPreferences.getString("address",""));
+        }
+        if (sharedPreferences.contains("batchid")){
+            batchidd=sharedPreferences.getString("batchid","");
+        }
+        if (sharedPreferences.contains("userid")){
+            studentidd=sharedPreferences.getString("userid","");
         }
         img.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -409,11 +415,11 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
                 super.getParams();
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
-                map.put("student_id", "9015363586");
+                map.put("student_id", studentidd);
                 map.put("student_image",encoded);
                 map.put("location",tv.getText().toString());
                 map.put("attendance","PRESENT");
-                map.put("batch_id","184");
+                map.put("batch_id",batchidd);
                 return map;
             }
         };

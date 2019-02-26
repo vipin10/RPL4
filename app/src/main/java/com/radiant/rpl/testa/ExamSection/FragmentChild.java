@@ -23,12 +23,16 @@ import java.util.HashMap;
 
 import radiant.rpl.radiantrpl.R;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by DAT on 9/1/2015.
  */
 public class FragmentChild extends Fragment implements View.OnClickListener {
     String childname,quename,option1,option2,option3,option4;
     String dummystuid="aman";
+    SharedPreferences sp;
+
     TextView textViewChildName,t1,optiona,optionb,optionc,optiond,titlea,titleb,titlec,titled;
     LinearLayout l1,l2,l3,l4;
     DbAutoSave dbAutoSave;
@@ -49,10 +53,12 @@ public class FragmentChild extends Fragment implements View.OnClickListener {
         option3=bundle.getString("op3");
         option4=bundle.getString("op4");
         hm.put(quename,childname);
+        sp=getActivity().getSharedPreferences("mypref", MODE_PRIVATE);
         dbAutoSave = new DbAutoSave(getContext());
         getIDs(view);
         setEvents();
         idd=dbAutoSave.getDataOfSingleClient(query);
+        dummystuid=sp.getString("userid","");
         return view;
     }
 

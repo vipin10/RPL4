@@ -110,7 +110,7 @@ public class TestQuestion extends HiddenCameraActivity {
     ArrayList<String> options4=new ArrayList<>();
     ArrayList<String> statuss=new ArrayList<>();
     ArrayList<String> questatus=new ArrayList<>();
-    String value,batchvalue;
+    String value,batchvalue,studentid;
 
     SetterGetter setterGetter;
     String[] title = {
@@ -155,6 +155,7 @@ public class TestQuestion extends HiddenCameraActivity {
         sp1=getSharedPreferences("mypreff", MODE_PRIVATE);
         batchvalue=sp.getString("batchid","");
         value=sp1.getString("languagev","");
+        studentid=sp.getString("userid","");
         studentidlist=new ArrayList<>();
         questioniddd=new ArrayList<>();
         answeredoptionn =new ArrayList<>();
@@ -523,7 +524,7 @@ public class TestQuestion extends HiddenCameraActivity {
     }
 
       public void getStatusdata(){
-        cursor11=dbAutoSave.getData1("aman");
+        cursor11=dbAutoSave.getData1(studentid);
           if (cursor11 != null) {
               cursor11.moveToFirst();
 
@@ -631,7 +632,7 @@ public class TestQuestion extends HiddenCameraActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/x-www-form-urlencoded");
                 map.put("student_image", encodedd);
-                map.put("student_id","9015363586");
+                map.put("student_id",studentid);
                 System.out.println("hhh"+map);
                 return map;
             }
