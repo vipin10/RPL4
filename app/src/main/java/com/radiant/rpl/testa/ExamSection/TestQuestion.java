@@ -494,7 +494,7 @@ public class TestQuestion extends HiddenCameraActivity {
 
 
     public void getalldata(){
-        cursor=dbAutoSave.getData("1");
+        cursor=dbAutoSave.getData(studentid);
         ArrayList<SetterGetter> dataList = new ArrayList<SetterGetter>();
         if (cursor != null) {
             cursor.moveToFirst();

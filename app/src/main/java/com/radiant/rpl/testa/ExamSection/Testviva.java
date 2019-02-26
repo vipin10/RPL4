@@ -527,7 +527,7 @@ SharedPreferences sp;
 
 
     public void getalldata(){
-        cursor=dbAutoSave.getData("aman");
+        cursor=dbAutoSave.getData(studentid);
         ArrayList<SetterGetter> dataList = new ArrayList<SetterGetter>();
         String batch_id=batchvalue;
         long theory_time=(TimeLeftInMillis/1000)%60;
@@ -614,6 +614,7 @@ SharedPreferences sp;
                     Toast.makeText(getApplicationContext(),"Details are"+response,Toast.LENGTH_LONG).show();
                     String status = jobj.getString("status");
                     if (status.equals("1")) {
+                        getApplicationContext().deleteDatabase("DbAutoSave.db");
                         Intent ii = new Intent(Testviva.this, Start_Registration.class);
                         startActivity(ii);
 
