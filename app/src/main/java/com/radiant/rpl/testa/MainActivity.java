@@ -532,10 +532,10 @@ ProgressDialog pd;
 
         //Choose category
         ArrayAdapter<String> categoryadapt = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,jobrolelist);
+                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Category));
         categoryadapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        category.setAdapter(jobroleadapter);
+        category.setAdapter(categoryadapt);
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 

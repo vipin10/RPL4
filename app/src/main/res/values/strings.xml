@@ -21,7 +21,7 @@
     <string name="error_not_having_camera">Cant find Camera</string>
 
     <!-- hint name of field -->
-    <string name="line1">1. Total duration of examination is 50 Minutes i.e 25 Minutes for theory exam and
+    <string name="line1">1. Total duration of examination is defined on the exam panel for theory exam and
     25 Minutes for viva voce.</string>
     <string name="line2">2. The clock will be set at the server. The countdown timer in the top right corner of screen will display the remaining time available for you to complete the examination.</string>
     <string name="line3">3. The Question Palette displayed on the right side of screen will show the
@@ -224,6 +224,13 @@ status of each question using one of the following symbols:</string>
         <item>Select State</item>
         <item>Yes </item>
         <item>No</item>
+    </string-array>
+
+    <string-array name="Category">
+        <item>Select Category</item>
+        <item>General </item>
+        <item>OBC</item>
+        <item>SC/ST</item>
     </string-array>
 
     <string-array name="District">

@@ -31,5 +31,7 @@
 
 
     <TextView android:textColor="@color/colorPrimaryDark" android:gravity="center" android:layout_gravity="center" android:id="@+id/finish"
-        android:layout_width="0.0dip" android:layout_height="fill_parent" android:text="Submit" android:layout_weight="1.0" style="@style/text_h4" />
+        android:layout_width="0.0dip"
+        android:enabled="false"
+        android:layout_height="fill_parent" android:text="Submit" android:layout_weight="1.0" style="@style/text_h4" />
 </LinearLayout>

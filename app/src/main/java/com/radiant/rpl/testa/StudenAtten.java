@@ -406,7 +406,6 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
             public Map<String, String> getHeaders() throws AuthFailureError {
                 super.getHeaders();
                 Map<String, String> map = new HashMap<>();
-
                 return map;
             }
 

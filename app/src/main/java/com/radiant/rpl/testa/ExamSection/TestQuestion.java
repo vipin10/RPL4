@@ -8,7 +8,10 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,10 +25,12 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
@@ -80,14 +85,14 @@ public class TestQuestion extends HiddenCameraActivity {
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
 
-    private static final long START_TIME_IN_MILLIS = 30000*20;
+    private static final long START_TIME_IN_MILLIS = 30000*40;
     private static final long START_TIME_IN_MILLISR = 00000;
     private android.os.CountDownTimer CountDownTimer;
     private boolean TimerRunning;
     private long TimeLeftInMillis;
     private long EndTime;
     private CameraConfig mCameraConfig;
-
+    RelativeLayout parentLayout;
 
     ArrayList<String> studentidlist;
     ArrayList<String> questioniddd;
@@ -143,6 +148,8 @@ public class TestQuestion extends HiddenCameraActivity {
             "Ramanand sagar",
             "Vishwamitra",
     };
+    int arraysize;
+    long timee;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,8 +178,19 @@ public class TestQuestion extends HiddenCameraActivity {
         setterGetter =new SetterGetter();
         mNotificationHelper = new NotificationHelper(this);
 
+        Snackbar
+                .make(parentLayout, "Submit Button will be enabled in 2 minutes.Swipe right to move to next question.", 8000)
+                .setActionTextColor(Color.MAGENTA)
+                .show();
 
-
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finalSubmitbutton.setEnabled(true);
+                //Do something after 100ms
+            }
+        }, 60000*2);
 
         imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,6 +270,7 @@ public class TestQuestion extends HiddenCameraActivity {
         finalSubmitbutton=vv.findViewById(R.id.finish);
         drawer_Right=findViewById(R.id.drawer_right);
         imgRight=findViewById(R.id.imgRight);
+        parentLayout=findViewById(R.id.r1);
         len=findViewById(R.id.len1);
         mdrawerLayout=findViewById(R.id.activity_main1);
         mdrawerLayout.addDrawerListener(mDrawerToggle);
@@ -265,7 +284,8 @@ public class TestQuestion extends HiddenCameraActivity {
 
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
 
-        TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
+        //TimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
+        TimeLeftInMillis = prefs.getLong("millisLeft", timee);
         TimerRunning = prefs.getBoolean("timerRunning", false);
 
         updateCountDownText();
@@ -428,6 +448,9 @@ public class TestQuestion extends HiddenCameraActivity {
                     System.out.println("dddd"+FormatSeconds(aab));
                     if (status.equals("1")){
                         JSONArray jsonArray=jobj.getJSONArray("theory_questions");
+                        arraysize=jsonArray.length();
+                        timee=arraysize*60*1000;
+                        System.out.println("bsdfsdf"+timee+"   "+START_TIME_IN_MILLIS);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
                             aa.add(c.getString("question_id"));
@@ -540,6 +563,8 @@ public class TestQuestion extends HiddenCameraActivity {
 
               cursor11.close();
 
+          }else{
+              Toast.makeText(getApplicationContext(),"Unable to open pellete",Toast.LENGTH_LONG).show();
           }
       }
 
@@ -566,7 +591,6 @@ public class TestQuestion extends HiddenCameraActivity {
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setMessage("Click Yes to schedule Test for Next Section.")
-                .setCancelable(false)
                 .setPositiveButton("Yes And proceed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -680,5 +704,40 @@ public class TestQuestion extends HiddenCameraActivity {
                 Toast.makeText(this, R.string.error_not_having_camera, Toast.LENGTH_LONG).show();
                 break;
         }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exitByBackKey();
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    protected void exitByBackKey() {
+
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setMessage("The exam will continue and Timer will keep running.Are you sure you want to exit")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        moveTaskToBack(true);
+                        //finish();
+
+                        //close();
+
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                })
+                .show();
+
     }
 }

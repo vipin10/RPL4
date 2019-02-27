@@ -27,6 +27,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -86,7 +87,7 @@ public class Testviva extends HiddenCameraActivity {
     String j;
     private NotificationHelper mNotificationHelper;
     private android.app.AlertDialog progressDialog;
-    private static final long START_TIME_IN_MILLIS =30000*20 ;
+    private static final long START_TIME_IN_MILLIS =30000*50 ;
     private static final long  START_TIME_IN_MILLISR=00000;
     private android.os.CountDownTimer CountDownTimer;
     private boolean TimerRunning;
@@ -777,6 +778,41 @@ SharedPreferences sp;
                 Toast.makeText(this, R.string.error_not_having_camera, Toast.LENGTH_LONG).show();
                 break;
         }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exitByBackKey();
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    protected void exitByBackKey() {
+
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setMessage("The viva voce exam will continue and Timer will keep running.Are you sure you want to exit")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        moveTaskToBack(true);
+                        //finish();
+
+                        //close();
+
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                })
+                .show();
+
     }
 
 }

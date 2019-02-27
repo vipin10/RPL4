@@ -34,9 +34,11 @@ TextView tvv,tvv1;
             public void onClick(View v) {
                 String url = "https://www.skillassessment.org/retail/";
 
-                Intent i = new Intent(Intent.ACTION_VIEW);
+             Intent ii=new Intent(Registration_Done.this,Start_Registration.class);
+                   startActivity(ii);
+                /*Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
-                startActivity(i);
+                startActivity(i);*/
             }
         });
 
@@ -51,10 +53,11 @@ TextView tvv,tvv1;
             @Override
             public void onClick(View v) {
                 String url = "https://www.skillassessment.org/retail/";
-
-                Intent i = new Intent(Intent.ACTION_VIEW);
+                Intent ii=new Intent(Registration_Done.this,Start_Registration.class);
+                startActivity(ii);
+               /* Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
-                startActivity(i);
+                startActivity(i);*/
             }
         });
 
