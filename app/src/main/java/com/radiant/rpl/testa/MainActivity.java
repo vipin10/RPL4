@@ -120,11 +120,6 @@ public class MainActivity extends AppCompatActivity {
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
         checkBox = findViewById(R.id.checkBox);
         Email = findViewById(R.id.input_email);
-
-
-
-
-
         awesomeValidation.addValidation(MainActivity.this, R.id.input_name,"[a-zA-Z\\s]+", R.string.err_msg_for_first_name);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_last_name,"[a-zA-Z\\s]+", R.string.err_msg_for_last_name);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_address1,"(.|\\s)*\\S(.|\\s)*", R.string.err_msg_for_address1);
