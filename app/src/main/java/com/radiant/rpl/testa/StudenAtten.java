@@ -126,11 +126,12 @@ public class StudenAtten extends AppCompatActivity implements GoogleApiClient.Co
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (encoded!=null) {
-                      AssessorAttendance();
-                }else {
-                    Toast.makeText(getApplicationContext(),"You can't Continue without Uploading your Photo",Toast.LENGTH_LONG).show();
-                }
+                Intent ii=new Intent(StudenAtten.this,Testinstruction.class);
+                startActivity(ii);
+           if (encoded!=null) {
+                   AssessorAttendance();
+               }else {
+                    Toast.makeText(getApplicationContext(),"You can't Continue without Uploading your Photo",Toast.LENGTH_LONG).show();            }
             }
         });
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);

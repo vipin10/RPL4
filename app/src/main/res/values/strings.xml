@@ -14,11 +14,11 @@
     <string name="sign_up">Sign up</string>
     <string name="forget_password">Forget Password.?</string>
     <string name="Logout"><u>LOGOUT</u></string>
-
     <string name="error_cannot_open">Unable to open</string>
     <string name="error_cannot_write">Unable to access Storage</string>
     <string name="error_cannot_get_permission">Permission not granted</string>
     <string name="error_not_having_camera">Cant find Camera</string>
+
 
     <!-- hint name of field -->
     <string name="line1">1. Total duration of examination is defined on the exam panel for theory exam and
@@ -97,6 +97,8 @@ status of each question using one of the following symbols:</string>
     <string name="err_msg_for_acno">it must be filled and in between 1 to 14 digit</string>
     <string name="err_msg_for_dob">it must be selected</string>
     <string name="err_msg_for_gender">it must be selected</string>
+    <string name="error_message_email">Email is not in form</string>
+
 
     <string-array name="gender">
         <item>Select Gender</item>
@@ -228,7 +230,7 @@ status of each question using one of the following symbols:</string>
 
     <string-array name="Category">
         <item>Select Category</item>
-        <item>General </item>
+        <item>GEN</item>
         <item>OBC</item>
         <item>SC/ST</item>
     </string-array>

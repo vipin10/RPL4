@@ -18,4 +18,10 @@ public class SessionManager {
         String position = prefs.getString(key, "");
         return position;
     }
+
+    /*public void cleard(Context context, String key, String value){
+        SharedPreferences prefs1 = context.getSharedPreferences("Vipin",	Context.MODE_PRIVATE);
+        prefs1.clear();
+        prefs1.commit();
+    }*/
 }

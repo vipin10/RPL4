@@ -15,6 +15,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -49,10 +50,11 @@ import radiant.rpl.radiantrpl.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,input_layout_prefferedlanguage,category;
+    Spinner yearofbirth,monthofbirth,dateofbirth,education,employment,employer,sector,bankname,state,district,input_jobrole,
+            input_layout_prefferedlanguage,category;
     EditText input_name,input_last_name,input_mobile_no,input_address1
-            ,input_address2,input_pincode,input_aadhar,input_bank_ac,input_ifsc_code,input_bank_username,input_empid,input_loc;
-ProgressDialog pd;
+            ,input_address2,input_pincode,input_aadhar,input_bank_ac,input_ifsc_code,input_bank_username,input_empid,input_loc,Email;
+    ProgressDialog pd;
     String[] banks,states,districts,employers,jobrole;
     List<String> bankslist,Statelist,districtlist,sectorlist,employerlist,jobrolelist,preflang;
     HashMap<String, String> bankdetail = new HashMap<>();
@@ -68,7 +70,8 @@ ProgressDialog pd;
     String[] sectors=new String[]{"Select the Sector"};
     String[] preflangg=new String[]{"Select the Preffered Language"};
     ImageView input_photograph,input_aadharpic;
-    String Stateid,Statevalue,bankid,bankvalue,districtid,districtvalue,selectedstatetext,sectorid,sectorvalue,employerid,employervalue,jobroleid,jobrolevalue,preflangid,preflangvalue;
+    String Stateid,Statevalue,bankid,bankvalue,districtid,districtvalue,selectedstatetext,sectorid,sectorvalue,
+            employerid,employervalue,jobroleid,jobrolevalue,preflangid,preflangvalue;
     private static final int CAMERA_REQUEST = 1888;
     private static final int CAMERA_AADHAR_REQUEST = 1889;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
@@ -116,6 +119,7 @@ ProgressDialog pd;
         input_layout_prefferedlanguage=findViewById(R.id.input_layout_prefferedlanguage);
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
         checkBox = findViewById(R.id.checkBox);
+        Email = findViewById(R.id.input_email);
 
 
 
@@ -126,10 +130,11 @@ ProgressDialog pd;
         awesomeValidation.addValidation(MainActivity.this, R.id.input_address1,"(.|\\s)*\\S(.|\\s)*", R.string.err_msg_for_address1);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_pincode,"^[0-9]{6}$", R.string.err_msg_pincode);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_ac,"^[0-9]{11,16}$", R.string.err_msg_for_acno);
-        awesomeValidation.addValidation(MainActivity.this, R.id.input_ifsc_code,"^[A-Z0-9]{6,12}$", R.string.err_msg_for_ifsc);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_ifsc_code,"^[a-zA-Z0-9]{5,14}$", R.string.err_msg_for_ifsc);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_aadhar,"^[0-9]{12}$", R.string.err_msg_foraadhar);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_mobile_no,"^[0-9]{10}$", R.string.err_msg_formobile);
         awesomeValidation.addValidation(MainActivity.this, R.id.input_bank_username,"[a-zA-Z\\s]+", R.string.err_msg_for_namein_bank);
+        awesomeValidation.addValidation(MainActivity.this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
         sector.setEnabled(false);
         employer.setEnabled(false);
         input_jobrole.setEnabled(false);
@@ -163,14 +168,26 @@ ProgressDialog pd;
                else if (gender.equals("Select Gender")){
                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
                 }
+                 else if (gender.equals("Select categroy")){
+                     Toast.makeText(getApplicationContext(),"Gender must be selected",Toast.LENGTH_LONG).show();
+                 }
 
-               else if (state1.equals("Select the State")){
+
+
+                 else if (state1.equals("Select the State")){
                     Toast.makeText(getApplicationContext(),"State must be selected",Toast.LENGTH_LONG).show();
                 }
 
              else if (district1.equals("Select the District")){
                     Toast.makeText(getApplicationContext(),"District must be selected",Toast.LENGTH_LONG).show();
                 }
+
+                 else if (jobrole1.equals("Select the Jobrole")){
+                     Toast.makeText(getApplicationContext(),"jobrole must be selected",Toast.LENGTH_LONG).show();
+                 }
+                 else if (employer1.equals("Select the Employer")){
+                     Toast.makeText(getApplicationContext(),"Employer must be selected",Toast.LENGTH_LONG).show();
+                 }
 
                else if (eduction1.equals("Select Education")){
                     Toast.makeText(getApplicationContext(),"Education must be selected",Toast.LENGTH_LONG).show();
@@ -222,7 +239,10 @@ ProgressDialog pd;
                     ii.putExtra("preflang",preflangiddd);
                      ii.putExtra("pic",encodedphoto);
                      ii.putExtra("picaadhar",encodedphotoaadhar);
-                    startActivity(ii);
+                     ii.putExtra("Email",Email.getText().toString());
+                     ii.putExtra("categroy", categoryy);
+
+                     startActivity(ii);
 
                 }else
                 {
